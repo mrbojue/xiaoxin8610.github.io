@@ -3,60 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Read_Sqlmap | Red</title>
+  <title>任意文件查看与下载漏洞 | Red</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
+  <meta name="description" content="成因：    网站的业务需求，提供文件查看或下载功能，对用户查看或下载的文件不做限制，就能够查看或下载任意文件。可以是源代码文件、敏感文件等。
+文件读取示意代码：    &amp;lt;?php    $filename = $_GET[‘xx’];    echo file_get_contents($filename);    ?&amp;gt;    $filename没有经过校验，或者校验不严格，用户可控">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Read_Sqlmap">
-<meta property="og:url" content="http://yoursite.com/2016/08/16/read_sqlmap/index.html">
+<meta property="og:title" content="任意文件查看与下载漏洞">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/任意文件查看与下载漏洞/index.html">
 <meta property="og:site_name" content="Red">
-<meta property="og:description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
-<meta property="og:image" content="http://123.206.9.45/sqlmap.png">
-<meta property="og:image" content="http://123.206.9.45/sqlmap2.png">
-<meta property="og:updated_time" content="2016-09-07T02:33:21.237Z">
+<meta property="og:description" content="成因：    网站的业务需求，提供文件查看或下载功能，对用户查看或下载的文件不做限制，就能够查看或下载任意文件。可以是源代码文件、敏感文件等。
+文件读取示意代码：    &amp;lt;?php    $filename = $_GET[‘xx’];    echo file_get_contents($filename);    ?&amp;gt;    $filename没有经过校验，或者校验不严格，用户可控">
+<meta property="og:updated_time" content="2016-09-21T03:19:40.240Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Read_Sqlmap">
-<meta name="twitter:description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
-<meta name="twitter:image" content="http://123.206.9.45/sqlmap.png">
+<meta name="twitter:title" content="任意文件查看与下载漏洞">
+<meta name="twitter:description" content="成因：    网站的业务需求，提供文件查看或下载功能，对用户查看或下载的文件不做限制，就能够查看或下载任意文件。可以是源代码文件、敏感文件等。
+文件读取示意代码：    &amp;lt;?php    $filename = $_GET[‘xx’];    echo file_get_contents($filename);    ?&amp;gt;    $filename没有经过校验，或者校验不严格，用户可控">
   
     <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
   
@@ -105,10 +66,10 @@ Target:-u RUL 指定目标">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-read_sqlmap" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-任意文件查看与下载漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/16/read_sqlmap/" class="article-date">
-  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+    <a href="/2016/08/30/任意文件查看与下载漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
   </div>
@@ -119,7 +80,7 @@ Target:-u RUL 指定目标">
         
   
     <h1 class="article-title" itemprop="name">
-      Read_Sqlmap
+      任意文件查看与下载漏洞
     </h1>
   
 
@@ -127,26 +88,19 @@ Target:-u RUL 指定目标">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><br><br><img src="http://123.206.9.45/sqlmap.png" alt="sqlmap安装"><br><img src="http://123.206.9.45/sqlmap2.png" alt="2"><br><br></p>
-<h3 id="Options"><a href="#Options" class="headerlink" title="Options:"></a>Options:</h3><ul>
-<li>–version 显示版本信息并退出</li>
-<li>-h，–help 显示帮助信息</li>
-<li>-v verbose 回显级别：0-6 默认为1<pre><code>0:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-</code></pre></li>
-</ul>
-<p><br></p>
-<h3 id="Target"><a href="#Target" class="headerlink" title="Target:"></a>Target:</h3><p>-u RUL 指定目标地址</p>
+        <p>成因：<br>    网站的业务需求，提供文件查看或下载功能，对用户查看或下载的文件不做限制，就能够查看或下载任意文件。可以是源代码文件、敏感文件等。</p>
+<p>文件读取示意代码：<br>    &lt;?php<br>    $filename = $_GET[‘xx’];<br>    echo file_get_contents($filename);<br>    ?&gt;<br>    $filename没有经过校验，或者校验不严格，用户可控制这个变量读取任意文件。造成了任意文件读取漏洞。</p>
+<p>任意文件下载示意代码：<br>    &lt;?php<br>    $filename = $_GET[f];<br>    header(‘Content-Type: image/gif’);<br>    header(‘Content-Disposition: attachment; filename=’.$filename);<br>    header(‘Content-Length: ‘.filesize($filename));<br>    readfile($filename);<br>    ?&gt;<br>    $filename没有经过校验，或者校验不严格，用户可控制这个变量读取任意文件。造成了任意文件下载漏洞。</p>
+<p>google search：<br>    inurl:”readfile.php?file=”<br>    inurl:”download.php?file=”</p>
+<p>漏洞危害：<br>    下载服务器任意文件，包含脚本代码文件，系统敏感文件等<br>    进一步代码审计，查找更堵可利用的代码。</p>
+<p>漏洞挖掘：<br>    从url上：<br>        readfile.php?file=<strong><em>.txt<br>        download.php?file=</em></strong>.rar<br>    通过Web扫描器扫描发现漏洞。</p>
+<p>文件读取or文件包含：<br>    如果是文件读取，会显示php文件源代码。<br>    文件包含，会直接解析php文件。</p>
+<p>修复方案：<br>    过滤.(点)<br>    正则判断用户输入的参数的格式，看输入的是否合法。<br>    php.ini配置open_basedir        /etc/init.d/php-fpm restart </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit8bqrkn0004ncqv4cz2um84" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/任意文件查看与下载漏洞/" data-id="citl6rivz0007d0qvgsle7qaa" class="article-share-link">Share</a>
       
       
     </footer>
@@ -155,19 +109,19 @@ Target:-u RUL 指定目标">
     
 <nav id="article-nav">
   
-    <a href="/2016/08/16/需要复习的知识/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/08/30/文件包含漏洞/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          需要掌握的知识
+          文件包含漏洞
         
       </div>
     </a>
   
   
-    <a href="/2016/08/11/sugar/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/08/30/逻辑漏洞/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">sugar</div>
+      <div class="article-nav-title">逻辑漏洞</div>
     </a>
   
 </nav>

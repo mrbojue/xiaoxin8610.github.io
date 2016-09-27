@@ -3,60 +3,48 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Read_Sqlmap | Red</title>
+  <title>敏感信息泄露 | Red</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
+  <meta name="description" content="nmap扫描判断操作系统版本；
+中间件类型版本，http返回头部server、404报错、whatweb扫描；
+敏感文件：    phpinfo()信息
+编辑器备份文件
+版本管理攻击文件信息
+HTTP认证泄露
+管理后台泄露外网：将管理后台的服务绑定到内网IP，禁止开放在外网，密码尽可能设置复杂，增加验证码，防止暴力破解
+员工电子邮件以及分机号码
+报错显示错误详情：
+robots.txt
+phpmy">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Read_Sqlmap">
-<meta property="og:url" content="http://yoursite.com/2016/08/16/read_sqlmap/index.html">
+<meta property="og:title" content="敏感信息泄露">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/敏感信息泄漏/index.html">
 <meta property="og:site_name" content="Red">
-<meta property="og:description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
-<meta property="og:image" content="http://123.206.9.45/sqlmap.png">
-<meta property="og:image" content="http://123.206.9.45/sqlmap2.png">
-<meta property="og:updated_time" content="2016-09-07T02:33:21.237Z">
+<meta property="og:description" content="nmap扫描判断操作系统版本；
+中间件类型版本，http返回头部server、404报错、whatweb扫描；
+敏感文件：    phpinfo()信息
+编辑器备份文件
+版本管理攻击文件信息
+HTTP认证泄露
+管理后台泄露外网：将管理后台的服务绑定到内网IP，禁止开放在外网，密码尽可能设置复杂，增加验证码，防止暴力破解
+员工电子邮件以及分机号码
+报错显示错误详情：
+robots.txt
+phpmy">
+<meta property="og:updated_time" content="2016-09-20T10:24:51.963Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Read_Sqlmap">
-<meta name="twitter:description" content="Options:
-–version 显示版本信息并退出
--h，–help 显示帮助信息
--v verbose 回显级别：0-6 默认为10:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-
-
-
-Target:-u RUL 指定目标">
-<meta name="twitter:image" content="http://123.206.9.45/sqlmap.png">
+<meta name="twitter:title" content="敏感信息泄露">
+<meta name="twitter:description" content="nmap扫描判断操作系统版本；
+中间件类型版本，http返回头部server、404报错、whatweb扫描；
+敏感文件：    phpinfo()信息
+编辑器备份文件
+版本管理攻击文件信息
+HTTP认证泄露
+管理后台泄露外网：将管理后台的服务绑定到内网IP，禁止开放在外网，密码尽可能设置复杂，增加验证码，防止暴力破解
+员工电子邮件以及分机号码
+报错显示错误详情：
+robots.txt
+phpmy">
   
     <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
   
@@ -105,10 +93,10 @@ Target:-u RUL 指定目标">
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-read_sqlmap" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-敏感信息泄漏" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/08/16/read_sqlmap/" class="article-date">
-  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+    <a href="/2016/08/30/敏感信息泄漏/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
 </a>
     
   </div>
@@ -119,7 +107,7 @@ Target:-u RUL 指定目标">
         
   
     <h1 class="article-title" itemprop="name">
-      Read_Sqlmap
+      敏感信息泄露
     </h1>
   
 
@@ -127,26 +115,23 @@ Target:-u RUL 指定目标">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><br><br><img src="http://123.206.9.45/sqlmap.png" alt="sqlmap安装"><br><img src="http://123.206.9.45/sqlmap2.png" alt="2"><br><br></p>
-<h3 id="Options"><a href="#Options" class="headerlink" title="Options:"></a>Options:</h3><ul>
-<li>–version 显示版本信息并退出</li>
-<li>-h，–help 显示帮助信息</li>
-<li>-v verbose 回显级别：0-6 默认为1<pre><code>0:只显示python错误以及严重的信息
-1:同时显示基本信息和警告信息
-2:同时显示debug信息
-3:同时显示注入的payload
-4:同时显示http请求
-5:同时显示http响应头
-6:同时显示http响应页面
-</code></pre></li>
-</ul>
-<p><br></p>
-<h3 id="Target"><a href="#Target" class="headerlink" title="Target:"></a>Target:</h3><p>-u RUL 指定目标地址</p>
-
+        <p>nmap扫描判断操作系统版本；</p>
+<p>中间件类型版本，http返回头部server、404报错、whatweb扫描；</p>
+<p>敏感文件：<br>    phpinfo()信息</p>
+<pre><code>编辑器备份文件
+版本管理攻击文件信息
+HTTP认证泄露
+管理后台泄露外网：将管理后台的服务绑定到内网IP，禁止开放在外网，密码尽可能设置复杂，增加验证码，防止暴力破解
+员工电子邮件以及分机号码
+报错显示错误详情：
+robots.txt
+phpmyadmin
+网站源码备份文件等
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit8bqrkn0004ncqv4cz2um84" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/敏感信息泄漏/" data-id="citl6riv10003d0qv6vehxj39" class="article-share-link">Share</a>
       
       
     </footer>
@@ -155,19 +140,19 @@ Target:-u RUL 指定目标">
     
 <nav id="article-nav">
   
-    <a href="/2016/08/16/需要复习的知识/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/08/30/常见Web系统漏洞/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          需要掌握的知识
+          常见Web系统漏洞
         
       </div>
     </a>
   
   
-    <a href="/2016/08/11/sugar/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/08/30/任意命令执行/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">sugar</div>
+      <div class="article-nav-title">任意命令执行</div>
     </a>
   
 </nav>

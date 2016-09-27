@@ -5,16 +5,34 @@
   
   <title>CSRF | Red</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="CSRF">
+  <meta name="description" content="CSRF是指跨站请求伪造：
+
+csrf的攻击建立在浏览器与web服务器的会话中；
+欺骗用户访问URL。
+
+产生原因：    CSRF攻击依赖下面的假定：    攻击者了解受害者所在的站点    攻击者的目标站点具有持久化授权cookie或者受害者具有当前会话cookie    目标站点没有对用户在网站行为的第二授权
+CSRF攻击是黑客借助受害者的cookie骗取服务器的信任，但是黑客并不能获取到用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSRF">
 <meta property="og:url" content="http://yoursite.com/2016/08/30/CSRF/index.html">
 <meta property="og:site_name" content="Red">
-<meta property="og:description" content="CSRF">
-<meta property="og:updated_time" content="2016-09-18T07:08:53.894Z">
+<meta property="og:description" content="CSRF是指跨站请求伪造：
+
+csrf的攻击建立在浏览器与web服务器的会话中；
+欺骗用户访问URL。
+
+产生原因：    CSRF攻击依赖下面的假定：    攻击者了解受害者所在的站点    攻击者的目标站点具有持久化授权cookie或者受害者具有当前会话cookie    目标站点没有对用户在网站行为的第二授权
+CSRF攻击是黑客借助受害者的cookie骗取服务器的信任，但是黑客并不能获取到用">
+<meta property="og:updated_time" content="2016-09-19T07:21:13.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSRF">
-<meta name="twitter:description" content="CSRF">
+<meta name="twitter:description" content="CSRF是指跨站请求伪造：
+
+csrf的攻击建立在浏览器与web服务器的会话中；
+欺骗用户访问URL。
+
+产生原因：    CSRF攻击依赖下面的假定：    攻击者了解受害者所在的站点    攻击者的目标站点具有持久化授权cookie或者受害者具有当前会话cookie    目标站点没有对用户在网站行为的第二授权
+CSRF攻击是黑客借助受害者的cookie骗取服务器的信任，但是黑客并不能获取到用">
   
     <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
   
@@ -85,12 +103,42 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><br></p>
-<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2>
+        <p>CSRF是指跨站请求伪造：</p>
+<ul>
+<li>csrf的攻击建立在浏览器与web服务器的会话中；</li>
+<li>欺骗用户访问URL。</li>
+</ul>
+<p>产生原因：<br>    CSRF攻击依赖下面的假定：<br>    攻击者了解受害者所在的站点<br>    攻击者的目标站点具有持久化授权cookie或者受害者具有当前会话cookie<br>    目标站点没有对用户在网站行为的第二授权</p>
+<p>CSRF攻击是黑客借助受害者的cookie骗取服务器的信任，但是黑客并不能获取到用户的cookie，也不能看到cookie的内容。另外，由于同源策略的限制，黑客无法从返回的结果中得到任何的东西，csrf所能做的就是给服务器发送请求。</p>
+<p>get类型和post类型<br>利用csrf进行收听传播：<br>直接构造url：例如：http：//www.xxser.com/listen?listenid=8888   //listenid被收听用户ID<br>利用csrf进行转账：<br><a href="http://www.secbug.org/pay.jsp?user=xxer&amp;money=10000" target="_blank" rel="external">http://www.secbug.org/pay.jsp?user=xxer&amp;money=10000</a>            //xxer为攻击者账号</p>
+<p>post接受收听用户：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;post data&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form id=&quot;myfrom&quot; method=&quot;post&quot; action=&quot;http://www.xxser.com/publish&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;listenid&quot; value=&quot;8888&quot;&gt;
+
+&lt;/form&gt;
+
+&lt;script&gt;
+    var myfrom = document.getElementById(&quot;myfrom&quot;) ;
+    myfrom.submit();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>在这段代码中构造一个form表单，然后利用javascript自动提交表单。这样只要一打这个网页，就会自动提交POST数据。</p>
+<p>浏览器的Cookie机制：<br>    Cookie有两种表现形式：一种是本地Cookie，称之为持久性Cookie；另一种则是临时Cookie，称为Session Cookie。本地Cookie是服务端向客户端发送Cookie时制定了时效，Expire字段，存储于本地。当Expire所制定的时效过期后，Cookie将失效。Session Cookie则没有Expire时效，存储在浏览器内存中，当浏览器关闭后，Session Cookie也随之失效。<br>每个浏览器的Cookie机制不一样。有的浏览器并不发送Cookie。不发送Cookie的浏览器，攻击将会失败。所以测试时候，浏览器的选择业非常重要。</p>
+<p>检查CSRF:<br>    CSRF只能通过用户正当的操作进行攻击，即劫持用户操作。所以在检测时候，首先要确定Web应用程序的所有功能，以及哪些操作是敏感操作，比如修改密码，转账，发表留言等。<br>    确定了敏感操作，编写POC，使用这个poc提交请求。如果操作成功，即存在CSRF漏洞。<br>    CSRF漏洞可以理解为：服务器有没有执行POC的请求,如果执行，则代表存在CSRF漏洞。</p>
+<pre><code>半自动化检测工具：CSRFTester。是OWASP组织提供的一款半自动CSRF漏洞测试工具。
+</code></pre><p>CSRF的防御：<br>    1、二次确认 2、Token认证<br>    注:如果一个网站同时存在XSS和CSRF漏洞时，防范CSRF是没有任何意义的，因为XSS获取webshell不就是XSS与CSRF吗？</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8bn8290000zcqvo8z9xj2y" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/08/30/CSRF/" data-id="cit8bqrk70001ncqvrw73kd57" class="article-share-link">Share</a>
       
       
     </footer>
@@ -99,10 +147,19 @@
     
 <nav id="article-nav">
   
+    <a href="/2016/08/30/SQL注入/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          SQL 注入
+        
+      </div>
+    </a>
   
-    <a href="/2016/08/30/XSS/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2016/08/30/常见Web系统漏洞/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">XSS</div>
+      <div class="article-nav-title">常见Web系统漏洞</div>
     </a>
   
 </nav>
@@ -126,7 +183,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
     </div>
   </div>
 
@@ -139,7 +196,11 @@
       <ul>
         
           <li>
-            <a href="/2016/08/30/CSRF/">CSRF</a>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
           </li>
         
           <li>
@@ -147,15 +208,11 @@
           </li>
         
           <li>
-            <a href="/2016/08/30/SQL注入/">SQL 注入</a>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
           </li>
         
           <li>
-            <a href="/2016/08/30/注入练习/">注入练习</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
           </li>
         
       </ul>

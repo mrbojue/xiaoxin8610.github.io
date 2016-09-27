@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Red">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Red">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Red">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-常见Web系统漏洞" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/常见Web系统漏洞/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/常见Web系统漏洞/">常见Web系统漏洞</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>struts2</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/常见Web系统漏洞/" data-id="citl6rius0002d0qvsoovu6jh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-敏感信息泄漏" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/敏感信息泄漏/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/敏感信息泄漏/">敏感信息泄露</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>nmap扫描判断操作系统版本；</p>
+<p>中间件类型版本，http返回头部server、404报错、whatweb扫描；</p>
+<p>敏感文件：<br>    phpinfo()信息</p>
+<pre><code>编辑器备份文件
+版本管理攻击文件信息
+HTTP认证泄露
+管理后台泄露外网：将管理后台的服务绑定到内网IP，禁止开放在外网，密码尽可能设置复杂，增加验证码，防止暴力破解
+员工电子邮件以及分机号码
+报错显示错误详情：
+robots.txt
+phpmyadmin
+网站源码备份文件等
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/敏感信息泄漏/" data-id="citl6riv10003d0qv6vehxj39" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-任意命令执行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/任意命令执行/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/任意命令执行/">任意命令执行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当应用需要调用一些外部程序去处理内容的情况下，就会用到一些执行系统命令的函数。当用户可以控制命令执行函数中的参数时，就可以注入恶意系统命令到正常命令中，造成命令执行漏洞。</p>
+<p>脚本语言优点是简洁、方便，但也伴随着一些问题，如速度慢、无法接触系统底层，开发人员需要一些除去web的特殊功能时，就要调用一些外部程序。</p>
+<p>应用在调用这些函数执行系统命令的时候，如果将用户的输入作为系统命令的参数拼接到命令行中，又没有对用户输入的进行过滤的情况下，就会造成命令执行漏洞。</p>
+<p>PHP中常见可以调用外部程序的函数：<br>    system exec shell_exec passthru popen proc_popen</p>
+<p>危害<br>    继承web服务程序的权限，去执行系统命令<br>    读写文件<br>    反弹shell<br>    控制整个网站 甚至控制整个服务器 进一步内网渗透 等</p>
+<p>典型漏洞代码：<br>    &lt;?php<br>    system($_GET[‘cmd’])<br>    ?&gt;<br>system执行get得到的任意参数 </p>
+<p>过滤绕过：<br>    ; &amp; | </p>
+<p>linux下的sendmail命令自带读写文件功能，可以用了些webshell</p>
+<p>linux shell环境下双引号中间的变量也是可以被解析的，我们可以在双引号内利用反引号执行任意命令</p>
+<p>system(“/bin/prog –p=’$arg’”);<br>这种情况下我们要下闭合单引号才能执行命令：system(“/bin/prog -p=’aaa’|id”)</p>
+<p>修复：<br>    能使用脚本解决的工作，不要调用其他程序处理。尽量少使用执行命令的函数，并在disable_functions中禁用。<br>    /etc/php.ini文件中：<br>    查找到 disable_functions ，添加需禁用的函数名，如下：<br>    phpinfo,eval,passthru,exec,system,chroot,scandir,chgrp,chown,shell_exec,proc_open,proc_get_status,ini_alter,ini_alter,ini_restore,dl,pfsockopen,openlog,syslog,readlink,symlink,popepassthru,stream_socket_server,fsocket,fsockopen</p>
+<pre><code>对于可控点事程序参数的情况，使用escapeshellcmd函数进行过滤(出去字符串中的特殊符号)
+
+参数的值尽量使用引号包裹，并在拼接前调用addslashes进行转义。
+</code></pre><p>利用的前提：<br>    代码中存在调用系统命令的函数<br>    函数中存在我们可控的点<br>    这个点没有经过过滤。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/任意命令执行/" data-id="citl6rivo0004d0qv4pxlbsrf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-任意代码执行" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/任意代码执行/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/30/任意代码执行/">任意代码执行</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>很多CMS为了设置的灵活性，都会选择使用eval函数来处理内容，但是处理的同时没有检查用户是否可以控制被处理的字符串。<br>PHP中能造成代码注入的主要函数：<br>    eval() assert()<br>    callback函数：preg_replace + /e 模式<br>    反序列化函数：unserialize()<br>    python中的exec()<br>危害 执行任意的代码，写入webshell 甚至控制服务器</p>
+<p>示意代码：<br>    源代码：<br>&lt;?php<br>$data = $_GET[‘data’];<br>eval(“\$ret = $data;”);<br>echo $ret;</p>
+<p>payload:<br>   1;phpinfo()<br>   phpinfo()<br>   ${phpinfo()}<br>分析<br>   eval(“\$ret = $data;”);<br>   eval(“\$ret = 1;phpinfo();”)<br>eval: 定义了一个变量$ret=1;执行了一段代码：phpinfo();</p>
+<p>源代码：<br>&lt;?php<br>$data = $_GET[‘data’];<br>echo “\$ret = ‘$data’;”;<br>eval(“\$ret = strtolower(‘$data’);”);<br>echo $ret;</p>
+<p>payload：<br>  ‘);phpinfo();//</p>
+<p>分析<br>    eval(“\$ret = strtolower(‘$data’);”);<br>    eval(“\$ret = strtolower(‘’);phpinfo();//‘);”);<br>eval:定义了一个变量$ret=strtolower(‘’);执行一段代码phpinfo();//注释了’)</p>
+<p>源代码：<br>&lt;?php<br>$data = $_GET[‘data’];</p>
+<p>#echo “\$ret = strtolower(\”$data\”);”;<br>eval(“\$ret = strtolower(\”$data\”);”);<br>echo $ret;</p>
+<p>/<em> strtolower() 函数把字符串转换为小写。注释：该函数是二进制安全的。 </em>/<br>/<em>   {$a}，由于这里a是变量，函数必须{}括起来才能引用返回值，  在双引号包围的情况下 实际上就是，{${函数}}   </em>/</p>
+<p>payload:<br>①    {${phpinfo()}}<br>②    “);phpinfo();//</p>
+<p>分析①<br>    eval(“\$ret = strtolower(\”$data\”);”);<br>    eval(“\$ret = strtolower(\”{${phpinfo()}}\”);”);<br>eval定义了一个变量$ret=”{${phpinfo()}}”;</p>
+<pre><code>源代码：
+&lt;?php
+$data = $_GET[&apos;data&apos;];
+echo $data;
+preg_replace(&apos;/&lt;data&gt;(.*)&lt;\/data&gt;/e&apos;, &apos;$ret = &quot;\\1&quot;;&apos;, $data);
+echo $ret; 
+
+payload:
+    &lt;data&gt;{${phpinfo()}}&lt;/data&gt;
+分析：
+       preg_replace(&apos;/&lt;data&gt;(.*)&lt;\/data&gt;/e&apos;, &apos;$ret = &quot;\\1&quot;;&apos;, $data);   //正则匹配出（.*）传递给$ ret则：
+    $ret=&quot;{${phpinfo()}}&quot;
+    在php中&quot;&quot;里的内容用{}括起来会理解为代码执行
+</code></pre><p>修复方案：<br>    能使用json保存数组、对象就使用json，不要将php对象保存成字符串，否则读取的时候需要使用eval<br>    对于必须使用eval的情况，一定要保证用户不能轻易接触eval的参数(用正则严格判断输入的数据格式)<br>    对于字符串，一定要使用单引号包裹可控代码，并在插入前进巷addslashes<br>addslashes()函数返回在预定义字符之前添加反斜杠的字符串。<br>    预定义字符是：<br>    单引号（’）<br>    双引号（”）<br>    反斜杠（\）<br>    NULL</p>
+<pre><code>放弃使用preg_replace的e修饰符
+使用preg_replace_callback()替换
+如果使用preg_replace的e修饰符，保证第二个参数中，对于正则匹配出的对象，用单引号包裹。
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/任意代码执行/" data-id="citl6riw60009d0qvl4dhgukb" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-需要复习的知识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/16/需要复习的知识/" class="article-date">
+  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/16/需要复习的知识/">需要掌握的知识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="常见漏洞"><a href="#常见漏洞" class="headerlink" title="常见漏洞:"></a>常见漏洞:</h3><ul>
+<li>SQL 注入</li>
+<li>xss</li>
+<li>csrf</li>
+<li>ssrf</li>
+<li>任意文件命令执行</li>
+<li>任意代码执行</li>
+<li>任意文件包含</li>
+<li>任意文件上传</li>
+<li>任意文件查看与下载</li>
+<li>敏感信息泄漏</li>
+<li>逻辑漏洞<blockquote>
+<p>是什么？产生原因，怎样利用，各种利用手法，怎么修复</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="编辑器漏洞"><a href="#编辑器漏洞" class="headerlink" title="编辑器漏洞"></a>编辑器漏洞</h3><p><a href="http://navisec.it/%E7%BC%96%E8%BE%91%E5%99%A8%E6%BC%8F%E6%B4%9E%E6%89%8B%E5%86%8C/" target="_blank" rel="external">编辑器漏洞总结</a></p>
+<h3 id="常见服务漏洞："><a href="#常见服务漏洞：" class="headerlink" title="常见服务漏洞："></a>常见服务漏洞：</h3><ul>
+<li>tomcat</li>
+<li>jboss</li>
+<li>redis</li>
+<li>Elasticsearch </li>
+<li>等等</li>
+</ul>
+<h3 id="java反序列化漏洞"><a href="#java反序列化漏洞" class="headerlink" title="java反序列化漏洞"></a>java反序列化漏洞</h3><p><a href="https://blog.chaitin.com/2015-11-11_java_unserialize_rce/?from=timeline&amp;isappinstalled=0" target="_blank" rel="external">java反序列化漏洞</a></p>
+<h3 id="struts2漏洞"><a href="#struts2漏洞" class="headerlink" title="struts2漏洞"></a>struts2漏洞</h3><p><a href="http://rickgray.me/2016/05/06/review-struts2-remote-command-execution-vulnerabilities.html" target="_blank" rel="external">Struts2 历史 RCE 漏洞回顾不完全系列
+</a></p>
+<h3 id="WebShell的获取与查杀"><a href="#WebShell的获取与查杀" class="headerlink" title="WebShell的获取与查杀"></a>WebShell的获取与查杀</h3><h3 id="Windows、Linux-系统提权"><a href="#Windows、Linux-系统提权" class="headerlink" title="Windows、Linux 系统提权"></a>Windows、Linux 系统提权</h3><h3 id="企业级渗透测试流程"><a href="#企业级渗透测试流程" class="headerlink" title="企业级渗透测试流程"></a>企业级渗透测试流程</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/16/需要复习的知识/" data-id="cit8bqrl20007ncqvaj82nzi8" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-read_sqlmap" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/16/read_sqlmap/" class="article-date">
+  <time datetime="2016-08-16T07:50:28.000Z" itemprop="datePublished">2016-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/16/read_sqlmap/">Read_Sqlmap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><br><br><img src="http://123.206.9.45/sqlmap.png" alt="sqlmap安装"><br><img src="http://123.206.9.45/sqlmap2.png" alt="2"><br><br></p>
+<h3 id="Options"><a href="#Options" class="headerlink" title="Options:"></a>Options:</h3><ul>
+<li>–version 显示版本信息并退出</li>
+<li>-h，–help 显示帮助信息</li>
+<li>-v verbose 回显级别：0-6 默认为1<pre><code>0:只显示python错误以及严重的信息
+1:同时显示基本信息和警告信息
+2:同时显示debug信息
+3:同时显示注入的payload
+4:同时显示http请求
+5:同时显示http响应头
+6:同时显示http响应页面
+</code></pre></li>
+</ul>
+<p><br></p>
+<h3 id="Target"><a href="#Target" class="headerlink" title="Target:"></a>Target:</h3><p>-u RUL 指定目标地址</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/16/read_sqlmap/" data-id="cit8bqrkn0004ncqv4cz2um84" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-sugar" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/11/sugar/" class="article-date">
+  <time datetime="2016-08-11T11:47:38.000Z" itemprop="datePublished">2016-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/11/sugar/">sugar</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Sugar<br>演唱：Maroon 5</p>
+<p>I’m hurtin baby, I’m broken down<br>I need your lovin, lovin I need it now<br>When I’m without ya, I’m somethin weak<br>Ya got me beggin beggin, I’m on my knees</p>
+<p>I don’t wanna be needin your love<br>I just wanna be deep in your love<br>And it’s killin me when you’re away (ohh baby)<br>Cause I really don’t care where you are<br>I just wanna be there where you are<br>And I gotta get one little taste</p>
+<p>Your sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me</p>
+<p>My broken pieces you pick them up<br>Don’t leave me hangin hangin come give me some<br>When I’m without ya so insecure<br>You are the one thing one thing I’m livin for</p>
+<p>I don’t wanna be needin your love<br>I just wanna be deep in your love<br>And it’s killin me when you’re away (ohh baby)<br>Cause I really don’t care where you are<br>I just wanna be there where you are<br>And I gotta get one little taste</p>
+<p>Your sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and pour it down on me</p>
+<p>I want that red velvet I want that sugar sweet<br>Don’t let nobody touch it unless that somebody’s me<br>I gotta be your man there ain’t no other way<br>Cause girl you’re hotter than a southern California day<br>I don’t wanna play no games you don’t gotta be afraid<br>Don’t give me all that shy shit no make up on that’s my (sugar)</p>
+<p>Sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me<br>Sugar yes please won’t you come and put it down on me<br>I’m right here cause I need little love a little sympathy<br>Ya you show me good lovin make it alright<br>Need a little sweetness in my life<br>Your sugar yes please won’t you come and put it down on me</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/11/sugar/" data-id="cit8bqrkn0005ncqv66umiki4" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-nmap常用命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/11/nmap常用命令/" class="article-date">
+  <time datetime="2016-08-11T11:47:38.000Z" itemprop="datePublished">2016-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/11/nmap常用命令/">Read_nmap</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="导语："><a href="#导语：" class="headerlink" title="导语："></a>导语：</h4><p>nmap的英文全称是”Network Mapper”,nmap可以用来快速地扫描大型网络或单个主机。nmap主要有四个方面的扫描功能：主机发现、端口扫描、应用与版本侦测、操作系统侦测</p>
+<p><br></p>
+<h3 id="主机发现："><a href="#主机发现：" class="headerlink" title="主机发现："></a>主机发现：</h3><p>nmap -sn 192.168.1.100-200 //扫描局域网192.168.1.100-192.168.1.200范围内活动的IP主机<br>nmap -v //显示过程<br>nmap -A //进行完整全面的扫描：主机发现、端口扫描、应用与版本侦测、操作系统侦测<br>nmap -n/-R //不进行DNS解析/总是解析<br>nmap -iL   –指定ip.txt</p>
+<h3 id="端口扫描："><a href="#端口扫描：" class="headerlink" title="端口扫描："></a>端口扫描：</h3><ul>
+<li>nmap -sS            #使用TCP SYN方式对目标主机进行扫描TCP端口</li>
+<li>nmap -sU            #使用UDP扫描方式确定主机UDP端口</li>
+<li>nmap -F            #快速扫描TOP100的端口</li>
+<li>nmap -Pn            #跳过主机发现进行端口扫描</li>
+<li>nmap -p 3389        #扫描指定的3389端口是否开放</li>
+<li>nmap –traceroute    #追踪路由节点</li>
+<li>nmap –top-ports 100    #扫描开放概率最高的前100个端口</li>
+</ul>
+<pre><code>例：nmap -sS -sU --top-ports 100 192168.136.86
+</code></pre><h3 id="版本侦测："><a href="#版本侦测：" class="headerlink" title="版本侦测："></a>版本侦测：</h3><ul>
+<li>nmap -sV                #进行版本侦测</li>
+<li>nmap –version-all        #尝试使用所有的probes进行侦测 （intensity 9)</li>
+<li>nmap –version-trace    #显示详细的侦测过程信息</li>
+</ul>
+<h3 id="操作系统侦测："><a href="#操作系统侦测：" class="headerlink" title="操作系统侦测："></a>操作系统侦测：</h3><ul>
+<li>nmap -O                 #进行操作系统侦测</li>
+</ul>
+<p><br></p>
+<h2 id="nmap进阶使用："><a href="#nmap进阶使用：" class="headerlink" title="nmap进阶使用："></a>nmap进阶使用：</h2><h5 id="防火墙-IDS规避"><a href="#防火墙-IDS规避" class="headerlink" title="防火墙/IDS规避"></a>防火墙/IDS规避</h5><h5 id="规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；"><a href="#规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；" class="headerlink" title="规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；"></a>规避原理：1、分片；2、IP诱骗；3、IP伪装；4、指定源端口；5、扫描延时；</h5><ul>
+<li>-f                                     #使用分片？？？？不太懂。。。</li>
+<li>-D<192.168.1.1,192,168,1,2,me>        #IP诱骗    ME为自己的IP</192.168.1.1,192,168,1,2,me></li>
+<li>-S<192.168.33.55>                    #IP伪装    伪装成其他IP</192.168.33.55></li>
+<li>-g 3355                                #指定源端口     表示自己的端口使用3355</li>
+<li>-e echo                                #使用echo网卡发送数据包    </li>
+</ul>
+<pre><code>例：nmap -v -F -Pn -D 192.168.1.2,192.168.4.6,ME -g 3355 127.0.0.1
+    显示过程信息，-F快速扫描top100的端口，-D使用ip诱骗掩饰自己真实IP（ME为自己IP），-g 3355使用自己的3355端口 127.0.0.1为扫描的目标IP.
+</code></pre><h3 id="数据库渗透测试："><a href="#数据库渗透测试：" class="headerlink" title="数据库渗透测试："></a>数据库渗透测试：</h3><ul>
+<li>nmap -p 3306 –script mysql-databases –script-args mysqluser=root,mysqlpass 127.0.0.1         </li>
+</ul>
+<h3 id="列举目标数据库："><a href="#列举目标数据库：" class="headerlink" title="列举目标数据库："></a>列举目标数据库：</h3><ul>
+<li>nmap -p 3306 –script=mysql-empty-password 123.206.9.45         #检查目标mysql密码</li>
+</ul>
+<h3 id="信息收集："><a href="#信息收集：" class="headerlink" title="信息收集："></a>信息收集：</h3><ul>
+<li><p>nmap –script ip-geolocation-* www.baidu.com     #IP地址收集 收集www.baidu.com域名包含的IP信息</p>
+</li>
+<li><p>nmap –script hostmap-ip2hosts     baidu.com         #IP反查 可以将所有绑定在该IP上的域名显示出来</p>
+</li>
+<li><p>nmap –script dns-brute baidu.com                         #DNS信息收集</p>
+</li>
+<li><p>nmap –script smb-check-vulns.nse -p 445 127.0.0.1         #对SMB漏洞进行扫描</p>
+</li>
+<li><p>nmap –script external baidu.com                         #Whois查询</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/11/nmap常用命令/" data-id="cit8bqrkn0003ncqvmyh9xdhf" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    <a class="extend prev" rel="prev" href="/">&laquo; __('prev')</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>SSRF | Red</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SSRF是指服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。
+成因：大多服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。比如从目标地址获取网页文本内容、加载指定地址的图片、下载等。
+PHP相关函数：    file_get_content()    curl-curl_exec()    soc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSRF">
+<meta property="og:url" content="http://yoursite.com/2016/08/30/SSRF/index.html">
+<meta property="og:site_name" content="Red">
+<meta property="og:description" content="SSRF是指服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。
+成因：大多服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。比如从目标地址获取网页文本内容、加载指定地址的图片、下载等。
+PHP相关函数：    file_get_content()    curl-curl_exec()    soc">
+<meta property="og:updated_time" content="2016-09-19T07:57:40.740Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSRF">
+<meta name="twitter:description" content="SSRF是指服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。
+成因：大多服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。比如从目标地址获取网页文本内容、加载指定地址的图片、下载等。
+PHP相关函数：    file_get_content()    curl-curl_exec()    soc">
+  
+    <link rel="alternate" href="/atom.xml" title="Red" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Red</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SSRF" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/30/SSRF/" class="article-date">
+  <time datetime="2016-08-30T04:12:12.000Z" itemprop="datePublished">2016-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SSRF
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>SSRF是指服务端请求伪造，是一种由攻击者构造形成由服务端发起请求的一个安全漏洞。一般情况下，SSRF攻击的目标是从外网无法访问的内部系统。</p>
+<p>成因：大多服务端提供了从其他服务器应用获取数据的功能且没有对目标地址做过滤和限制。比如从目标地址获取网页文本内容、加载指定地址的图片、下载等。</p>
+<p>PHP相关函数：<br>    file_get_content()<br>    curl-curl_exec()<br>    socket-fsockopen()</p>
+<p>利用：<br>    可以对外网、服务器所在的内网、本地进行端口扫描，湖区一些服务的banner信息。<br>    攻击运行在内网或本地的应用程序。<br>    对内网web应用进行指纹识别，通过访问默认文件实现。<br>    利用file协议读取本地文件等</p>
+<p>挖掘：<br>    从web功能上找<br>    从URL关键字查找</p>
+<p>验证：<br>    直接右键图片，在新窗口打开图片，如果浏览器上的URL地址是<a href="http://www.baidu.com/img/bd_XIAOXIN.jpg,说明不存在SSRF漏洞。" target="_blank" rel="external">http://www.baidu.com/img/bd_XIAOXIN.jpg,说明不存在SSRF漏洞。</a><br>    使用burpsuite等抓包工具来判断，首先SSRF是由服务端发起的请求。因此在加载图片时，是由服务端发起的。所以本地浏览器的请求中不存在图片的请求。</p>
+<p>防御：<br>    通常有以下5个思路：<br>    1,过滤返回信息，验证远程服务器对请求的响应是比较容易的方法。如果web应用是去获取某一种类型的文件。那么在把返回结果展示给用户之前先验证返回的信息是否符合标准。<br>    2, 统一错误信息，避免用户可以根据错误信息来判断远端服务器的端口状态。<br>    3,限制请求的端口为http常用的端口，比如，80,443,8080,8090。<br>    4,黑名单内网ip。避免应用被用来获取获取内网数据，攻击内网。<br>    5,禁用不需要的协议。仅仅允许http和https请求。可以防止类似于file:///,gopher://,ftp:// 等引起的问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/30/SSRF/" data-id="citl6rium0001d0qvyomi0z9v" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/21/安全配置与中间件漏洞/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/08/30/XSS/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">XSS</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/09/21/安全配置与中间件漏洞/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/SSRF/">SSRF</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/XSS/">XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/文件包含漏洞/">文件包含漏洞</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/30/任意文件查看与下载漏洞/">任意文件查看与下载漏洞</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 xioaxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
